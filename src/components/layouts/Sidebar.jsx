@@ -42,9 +42,9 @@ export default function Sidebar({ open, setOpen, user }) {
     textMuted:    dark ? "#94a3b8" : "#666",
     textNested:   dark ? "#cbd5e1" : "#777",
     hover:        dark ? "#1e293b" : "#f5f5f5",
-    activeItem:   "#5b5fc7",
-    activeBg:     dark ? "#2d2f6b" : "#e8eaf6",
-    activeText:   dark ? "#a5b4fc" : "#5b5fc7",
+    activeItem:   "#123d72",
+    activeBg:     dark ? "#123d72" : "#e8f3f6",
+    activeText:   dark ? "#b8f3ee" : "#123d72",
     nestedBorder: dark ? "#334155" : "#e5e7eb",
     title:        dark ? "#f1f5f9" : "#333",
   };
@@ -191,7 +191,7 @@ export default function Sidebar({ open, setOpen, user }) {
             return (
               <div key={`${item.name}-${index}`} style={{ marginBottom: "4px" }}>
                 <div
-                  style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 12px", borderRadius: "8px", background: isActive ? "#5b5fc7" : "transparent", color: isActive ? "#fff" : theme.text, transition: "background 0.2s ease" }}
+                  style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 12px", borderRadius: "8px", background: isActive ? "#123d72" : "transparent", color: isActive ? "#fff" : theme.text, transition: "background 0.2s ease" }}
                   onMouseEnter={(e) => !isActive && (e.currentTarget.style.background = theme.hover)}
                   onMouseLeave={(e) => !isActive && (e.currentTarget.style.background = "transparent")}
                 >
@@ -257,7 +257,7 @@ export default function Sidebar({ open, setOpen, user }) {
                                     <Link
                                       key={`${nestedItem.name}-${ni}`}
                                       to={nestedItem.path}
-                                      style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "8px", padding: "7px 10px", borderRadius: "6px", background: isNestedActive ? (dark ? "#2d2f6b" : "#d5d9f7") : "transparent", color: isNestedActive ? (dark ? "#a5b4fc" : "#5b5fc7") : theme.textNested, fontSize: "12px", transition: "all 0.2s ease" }}
+                                      style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "8px", padding: "7px 10px", borderRadius: "6px", background: isNestedActive ? (dark ? "#123d72" : "#e8f3f6") : "transparent", color: isNestedActive ? (dark ? "#b8f3ee" : "#123d72") : theme.textNested, fontSize: "12px", transition: "all 0.2s ease" }}
                                       onMouseEnter={(e) => !isNestedActive && (e.currentTarget.style.background = theme.hover)}
                                       onMouseLeave={(e) => !isNestedActive && (e.currentTarget.style.background = "transparent")}
                                     >
@@ -295,7 +295,7 @@ export default function Sidebar({ open, setOpen, user }) {
             <Link
               key={`${item.name}-${index}`}
               to={item.path}
-              style={{ textDecoration: "none", display: "flex", alignItems: "center", justifyContent: open ? "center" : "flex-start", gap: open ? "0px" : "12px", padding: "10px 12px", borderRadius: "8px", background: isActive ? "#5b5fc7" : "transparent", color: isActive ? "#fff" : theme.text, transition: "background 0.2s ease", marginBottom: "4px" }}
+              style={{ textDecoration: "none", display: "flex", alignItems: "center", justifyContent: open ? "center" : "flex-start", gap: open ? "0px" : "12px", padding: "10px 12px", borderRadius: "8px", background: isActive ? "#123d72" : "transparent", color: isActive ? "#fff" : theme.text, transition: "background 0.2s ease", marginBottom: "4px" }}
               onMouseEnter={(e) => !isActive && (e.currentTarget.style.background = theme.hover)}
               onMouseLeave={(e) => !isActive && (e.currentTarget.style.background = "transparent")}
             >

@@ -1,82 +1,67 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import baseApi from "../../api/baseApi";
-import { useAuth } from "../../contexts/AuthContext";
-import { getRoleHomePath } from "../../contexts/AuthContext";
-import DashboardLayout from "../../components/layouts/DashboardLayout";
-import { MdPersonAddDisabled } from "react-icons/md";
+import { useAuth, getRoleHomePath } from "../../contexts/AuthContext";
+import PngClock from "../../components/PngClock";
 
 export default function Login() {
   const navigate = useNavigate();
   const { fetchUser } = useAuth();
 
-  const [email,        setEmail]        = useState("");
-  const [password,     setPassword]     = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [isLoading,    setIsLoading]    = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (event) => {
-  event.preventDefault();
-  setErrorMessage("");
-  setIsLoading(true);
+    event.preventDefault();
+    setErrorMessage("");
+    setIsLoading(true);
 
-  try {
-    
-    await baseApi.get("/sanctum/csrf-cookie");
+    try {
+      await baseApi.get("/sanctum/csrf-cookie");
+      await baseApi.post("/api/login", { email, password });
 
-    
-    await baseApi.post("/api/login", { email, password });
-
-    
-    const userData = await fetchUser();
-
-    navigate(getRoleHomePath(userData?.role), { replace: true });
-
-  } catch (error) {
-    if (error.response?.status === 422) {
-      setErrorMessage("Invalid email or password.");
-    } else if (error.response?.status === 419) {
-      setErrorMessage("Session expired. Refresh and try again.");
-    } else {
-      setErrorMessage("Login failed.");
+      const userData = await fetchUser();
+      navigate(getRoleHomePath(userData?.role), { replace: true });
+    } catch (error) {
+      if (error.response?.status === 422) {
+        setErrorMessage("Invalid email or password.");
+      } else if (error.response?.status === 419) {
+        setErrorMessage("Session expired. Refresh and try again.");
+      } else {
+        setErrorMessage("Login failed.");
+      }
+    } finally {
+      setIsLoading(false);
     }
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
 
   return (
-    <div
-      className="vh-100 d-flex align-items-center justify-content-center"
-      style={{ backgroundColor: "#BDE8F5" }}
-    >
-      <div
-        className="card shadow-lg border-0"
-        style={{ maxWidth: "900px", width: "100%", borderRadius: "10px" }}
-      >
+    <div className="enterprise-login">
+      <div className="enterprise-login-card">
         <div className="row g-0">
-          {/* Left – Branding */}
-          <div
-            className="col-md-5 d-none d-md-flex align-items-center justify-content-center text-white rounded-start"
-            style={{ backgroundColor: "#0F2854" }}
-          >
-            <div className="text-center px-4">
-              <h2 className="fw-bold mb-3">ERP System</h2>
-              <p className="opacity-75">
-                Secure and centralized platform for managing your organization.
-              </p>
+          <div className="col-md-5 d-none d-md-flex enterprise-login-brand">
+            <div>
+              <div className="enterprise-mark">NG</div>
+              <h2>NextGen Unified ERP</h2>
+              <p>Secure operational control for HRMS, payroll, assets, CRM, AIMS, MOMS, and reporting.</p>
+              <div className="enterprise-brand-meta">
+                <span>Governed access</span>
+                <span>PNG operations</span>
+              </div>
             </div>
           </div>
 
-          {/* Right – Login Form */}
           <div className="col-md-7">
-            <div className="card-body p-5">
-              <h4
-                className="text-center fw-semibold mb-4"
-                style={{ color: "#1C4D8D" }}
-              >
-                Sign In
-              </h4>
+            <div className="enterprise-login-body">
+              <div className="enterprise-login-top">
+                <div>
+                  <span className="enterprise-kicker">Enterprise access</span>
+                  <h4>Sign in to ERP</h4>
+                </div>
+                <PngClock compact />
+              </div>
 
               {errorMessage && (
                 <div className="alert alert-danger py-2" role="alert">
@@ -86,12 +71,12 @@ export default function Login() {
 
               <form onSubmit={handleLogin}>
                 <div className="mb-3">
-                  <label className="form-label fw-medium">Email Address</label>
+                  <label className="form-label fw-medium">Email address</label>
                   <input
                     type="email"
-                    className="form-control"
+                    className="form-control enterprise-input"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(event) => setEmail(event.target.value)}
                     required
                   />
                 </div>
@@ -100,25 +85,20 @@ export default function Login() {
                   <label className="form-label fw-medium">Password</label>
                   <input
                     type="password"
-                    className="form-control"
+                    className="form-control enterprise-input"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(event) => setPassword(event.target.value)}
                     required
                   />
                 </div>
 
-                <button
-                  type="submit"
-                  className="btn w-100"
-                  disabled={isLoading}
-                  style={{ backgroundColor: "#1C4D8D", color: "#fff" }}
-                >
+                <button type="submit" className="btn w-100 enterprise-submit" disabled={isLoading}>
                   {isLoading ? "Signing in..." : "Sign In"}
                 </button>
               </form>
 
-              <p className="text-center mt-4 mb-0" style={{ fontSize: "0.9rem" }}>
-                © {new Date().getFullYear()} ERP System
+              <p className="enterprise-login-footer">
+                © {new Date().getFullYear()} NextGen PNG. Authorized users only.
               </p>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Activity,
   AlertTriangle,
@@ -31,6 +31,32 @@ import {
 } from "lucide-react";
 
 const today = "2026-06-09";
+const pngTimeZone = "Pacific/Port_Moresby";
+
+function formatPngDateTime(date) {
+  return new Intl.DateTimeFormat("en-PG", {
+    timeZone: pngTimeZone,
+    weekday: "short",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true
+  }).format(date);
+}
+
+function usePngTime() {
+  const [now, setNow] = useState(() => new Date());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  return formatPngDateTime(now);
+}
 
 const accounts = [
   { email: "admin@nextgenpng.net", password: "password", name: "System Admin", role: "Super Admin", modules: ["dashboard", "hrms", "payroll", "aims", "moms", "assets", "crm", "tickets", "monitoring", "reports", "settings", "users"], write: true },
@@ -617,6 +643,7 @@ function App() {
   const [activeModule, setActiveModule] = useState("dashboard");
   const [activeSection, setActiveSection] = useState(defaultUi);
   const [query, setQuery] = useState("");
+  const pngTime = usePngTime();
 
   function updateState(next, auditMessage) {
     const withAudit = auditMessage ? { ...next, audit: [auditMessage, ...(next.audit || [])].slice(0, 12) } : next;
@@ -668,6 +695,10 @@ function App() {
             <p>Role-controlled ERP access</p>
             <h1>{moduleConfig.find((item) => item.id === module)?.label}</h1>
           </div>
+          <div className="png-clock" aria-label="Papua New Guinea time">
+            <span>PNG Time</span>
+            <strong>{pngTime}</strong>
+          </div>
           <label className="search">
             <Search size={17} />
             <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search every visible record..." />
@@ -696,6 +727,7 @@ function Login({ onLogin }) {
   const [email, setEmail] = useState("admin@nextgenpng.net");
   const [password, setPassword] = useState("password");
   const [error, setError] = useState("");
+  const pngTime = usePngTime();
 
   function submit(event) {
     event.preventDefault();
@@ -710,16 +742,27 @@ function Login({ onLogin }) {
 
   return (
     <div className="login">
+      <div className="login-bg-grid" />
       <section className="login-panel">
-        <div className="brand large">
-          <div className="brand-mark">NG</div>
-          <div>
-            <strong>NextGen Unified ERP</strong>
-            <span>Assets, CRM, Ticketing, Monitoring</span>
+        <div className="login-header">
+          <div className="brand large">
+            <div className="brand-mark">NG</div>
+            <div>
+              <strong>NextGen Unified ERP</strong>
+              <span>Enterprise operations platform</span>
+            </div>
+          </div>
+          <div className="login-clock">
+            <span>Papua New Guinea Time</span>
+            <strong>{pngTime}</strong>
           </div>
         </div>
+        <div className="login-intro">
+          <h1>Secure ERP Access</h1>
+          <p>Assets, HRMS, payroll, CRM, ticketing, monitoring, and management controls in one governed workspace.</p>
+        </div>
         <form onSubmit={submit}>
-          <label>Email<input value={email} onChange={(event) => setEmail(event.target.value)} /></label>
+          <label>Email address<input value={email} onChange={(event) => setEmail(event.target.value)} /></label>
           <label>Password<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} /></label>
           {error && <p className="error">{error}</p>}
           <button className="primary" type="submit"><Lock size={17} /> Sign in</button>

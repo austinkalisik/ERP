@@ -5,6 +5,7 @@ import { Dropdown, Modal, Button, Navbar, Container, Nav } from "react-bootstrap
 import Sidebar from "./Sidebar";
 import Breadcrumb from "../Breadcrumb";
 import NotificationBell from "./NotificationBell";
+import PngClock from "../PngClock";
 import { useAuth } from "../../contexts/AuthContext";
 import baseApi from "../../api/baseApi";
 
@@ -82,6 +83,7 @@ export default function DashboardLayout({ children }) {
                 >
                     <Container fluid className="px-0">
                         <Nav className="ms-auto align-items-center gap-2">
+                            <PngClock compact />
 
                             {/* Bell icon — shown for all authenticated users */}
                             {showBell && <NotificationBell />}
