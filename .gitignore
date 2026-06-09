@@ -1,0 +1,48 @@
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Local environment and credentials
+.env
+.env.backup
+.env.production
+auth.json
+config.local.php
+
+# Dependency directories
+node_modules/
+vendor/
+
+# Build output and generated frontend files
+dist/
+dist-ssr/
+public/build/
+public/hot
+
+# Laravel generated files
+storage/*.key
+storage/pail/
+.phpunit.result.cache
+.phpunit.cache/
+bootstrap/cache/*.php
+
+# Tooling and editor state
+.codex-run/
+.fleet/
+.idea/
+.nova/
+.vscode/
+.zed/
+.phpactor.json
+*.local
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

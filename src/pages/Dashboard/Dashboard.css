@@ -1,0 +1,72 @@
+/* ===== Dashboard ===== */
+.dashboard-title {
+  font-weight: bold;
+  font-size: 40px;
+}
+
+/* ===== Dashboard Cards ===== */
+.dashboard-card {
+  border: none;
+  min-height: 160px;
+  padding: 22px;
+  border-radius: 14px;
+  color: #ffffff !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Icon + title row */
+.dashboard-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dashboard-card-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 17px;
+  color: #ffffff !important;
+}
+
+/* Count */
+.dashboard-card-count {
+  font-size: 34px;
+  font-weight: 700;
+  margin-top: 8px;
+  color: #ffffff !important;
+}
+
+/* Button */
+.dashboard-view-btn {
+  background: #ffffff;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  color: #000 !important;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.dashboard-view-btn:hover {
+  background: #f1f1f1;
+}
+
+
+
+/* ===== Recent Activities ===== */
+.activities-card {
+  border-radius: 14px;
+}
+
+.activities-header {
+  background: #ffffff;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+
+.activities-title {
+  font-weight: 600;
+}
+

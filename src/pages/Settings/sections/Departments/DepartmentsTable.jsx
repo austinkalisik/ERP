@@ -1,0 +1,68 @@
+export default function DepartmentsTable({ data, onEdit, onDelete }) {
+  return (
+    <div
+      style={{
+        maxWidth: 1100,
+        margin: "0 auto",
+      }}
+      className="table-responsive"
+    >
+      <table className="table table-bordered align-middle">
+        <thead style={{ backgroundColor: "#f3f4f6" }}>
+          <tr>
+            <th style={{ fontWeight: 600 }}>Department Name</th>
+            <th style={{ fontWeight: 600, width: 160 }}>Prefix</th>
+            <th
+              style={{ fontWeight: 600, width: 160 }}
+              className="text-end"
+            >
+              Actions
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {data.length === 0 && (
+            <tr>
+              <td
+                colSpan="3"
+                className="text-center text-muted"
+                style={{ padding: "32px 0" }}
+              >
+                No departments available
+              </td>
+            </tr>
+          )}
+
+          {data.map((dept) => (
+            <tr key={dept.id}>
+              <td style={{ fontWeight: 500 }}>
+                {dept.name}
+              </td>
+
+              <td>
+                {dept.prefix}
+              </td>
+
+              <td className="text-end">
+                <button
+                  className="btn btn-sm btn-outline-primary me-2"
+                  onClick={() => onEdit(dept)}
+                >
+                  Edit
+                </button>
+
+                <button
+                  className="btn btn-sm btn-outline-danger"
+                  onClick={() => onDelete(dept.id)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}

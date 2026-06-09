@@ -1,0 +1,34 @@
+UPLOAD INSTRUCTIONS
+
+1. In cPanel File Manager open:
+   /home/nextgenpng/assets.nextgenpng.net
+
+2. Delete old files in that folder.
+
+3. Upload this ZIP there:
+   UPLOAD_TO_CPANEL_Nextgen_Assets_Management_System.zip
+
+4. Extract it in the same folder.
+
+5. Edit .env and replace:
+   DB_DATABASE=CHANGE_DATABASE_NAME
+   DB_USERNAME=CHANGE_DATABASE_USER
+   DB_PASSWORD=CHANGE_DATABASE_PASSWORD
+
+6. In cPanel Terminal run:
+   cd ~/assets.nextgenpng.net
+   php artisan migrate --seed --force
+   php artisan config:cache
+   php artisan route:cache
+   php artisan view:cache
+
+7. Open:
+   https://assets.nextgenpng.net
+
+Login:
+admin@nextgen.net
+password
+
+Change the password after login.
+
+IMPORTANT: If the site shows a PHP version error, switch cPanel PHP for assets.nextgenpng.net to PHP 8.3.

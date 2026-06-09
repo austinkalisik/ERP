@@ -1,0 +1,104 @@
+$ErrorActionPreference = "Stop"
+
+$ProjectPath = $PSScriptRoot
+$PreferredHost = "192.168.31.34"
+$AppPort = 8000
+$XamppRoot = @("C:\Users\akalisik\xamp", "C:\xampp") | Where-Object { Test-Path $_ } | Select-Object -First 1
+
+$DetectedHost = Get-NetIPAddress -AddressFamily IPv4 -ErrorAction SilentlyContinue |
+    Where-Object {
+        $_.IPAddress -notlike "127.*" -and
+        $_.IPAddress -notlike "169.254.*" -and
+        $_.PrefixOrigin -ne "WellKnown"
+    } |
+    Sort-Object @{ Expression = { if ($_.IPAddress -eq $PreferredHost) { 0 } elseif ($_.IPAddress -like "192.168.31.*") { 1 } else { 2 } } } |
+    Select-Object -ExpandProperty IPAddress -First 1
+
+$AppHost = if ($DetectedHost) { $DetectedHost } else { $PreferredHost }
+
+if ($XamppRoot) {
+    if (-not (Get-Process httpd -ErrorAction SilentlyContinue)) {
+        Start-Process (Join-Path $XamppRoot "apache_start.bat")
+    }
+
+    if (-not (Get-Process mysqld -ErrorAction SilentlyContinue)) {
+        Start-Process (Join-Path $XamppRoot "mysql_start.bat")
+    }
+} else {
+    Write-Warning "XAMPP folder was not found. Start Apache/MySQL manually if phpMyAdmin or the database is offline."
+}
+
+Write-Host "Waiting for MySQL..."
+for ($Attempt = 1; $Attempt -le 20; $Attempt++) {
+    $MySqlReady = Test-NetConnection -ComputerName 127.0.0.1 -Port 3306 -InformationLevel Quiet
+    if ($MySqlReady) {
+        break
+    }
+
+    Start-Sleep -Seconds 1
+}
+
+if (-not $MySqlReady) {
+    throw "MySQL did not start on 127.0.0.1:3306. Open XAMPP Control Panel and start MySQL, then run this file again."
+}
+
+Set-Location $ProjectPath
+
+$env:APP_URL = "http://${AppHost}:${AppPort}"
+
+Write-Host "Starting Nextgens Ticketing System at http://${AppHost}:${AppPort}"
+
+$Ports = @($AppPort, 5173)
+foreach ($Port in $Ports) {
+    Get-NetTCPConnection -LocalPort $Port -ErrorAction SilentlyContinue |
+        Select-Object -ExpandProperty OwningProcess -Unique |
+        ForEach-Object {
+            Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue
+        }
+}
+
+if (Test-Path "public\hot") {
+    Remove-Item "public\hot" -Force
+}
+
+$ManifestPath = "public\build\manifest.json"
+$NeedsBuild = -not (Test-Path $ManifestPath)
+if (-not $NeedsBuild) {
+    $SourceFiles = Get-ChildItem resources\js, resources\css -Recurse -File -ErrorAction SilentlyContinue
+    $Manifest = Get-Item $ManifestPath
+    $NeedsBuild = ($SourceFiles | Where-Object { $_.LastWriteTime -gt $Manifest.LastWriteTime } | Select-Object -First 1) -ne $null
+}
+
+if ($NeedsBuild) {
+    Write-Host "Building frontend assets..."
+    npm run build
+    if ($LASTEXITCODE -ne 0) {
+        throw "Frontend build failed."
+    }
+}
+
+php artisan optimize:clear
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+Start-Process powershell -WorkingDirectory $ProjectPath -ArgumentList "-NoExit", "-Command", "php artisan serve --host=0.0.0.0 --port=$AppPort"
+
+$AppUrl = "http://${AppHost}:${AppPort}"
+Write-Host "Waiting for Laravel..."
+for ($Attempt = 1; $Attempt -le 20; $Attempt++) {
+    try {
+        Invoke-WebRequest -UseBasicParsing $AppUrl -TimeoutSec 2 | Out-Null
+        $LaravelReady = $true
+        break
+    } catch {
+        Start-Sleep -Seconds 1
+    }
+}
+
+if (-not $LaravelReady) {
+    throw "Laravel did not start at $AppUrl. Check the Laravel PowerShell window for the error."
+}
+
+Start-Process $AppUrl
+Start-Process "http://localhost/phpmyadmin/"

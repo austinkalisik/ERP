@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071014"/>
+      <stop offset="1" stop-color="#121a22"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#17232b"/>
+      <stop offset="1" stop-color="#0f171d"/>
+    </linearGradient>
+    <style>
+      .title{font:700 34px Arial,sans-serif;fill:#f6fbfb}
+      .sub{font:400 16px Arial,sans-serif;fill:#98a9ad}
+      .box-title{font:700 20px Arial,sans-serif;fill:#dffcf6}
+      .field{font:400 15px Arial,sans-serif;fill:#c9d6d8}
+      .note{font:400 13px Arial,sans-serif;fill:#92a2a6}
+      .box{fill:url(#card);stroke:#2f4148;stroke-width:1.4;rx:10}
+      .accent{stroke:#52f0c1;stroke-width:2.5;fill:none}
+      .muted{stroke:#55717a;stroke-width:1.5;fill:none;stroke-dasharray:6 7}
+      .wire{fill:#111b22;stroke:#36505a;stroke-width:1.2;rx:8}
+    </style>
+  </defs>
+  <rect width="1400" height="900" fill="url(#bg)"/>
+  <text x="60" y="64" class="title">NextGen CRM ERD + Wireframe</text>
+  <text x="60" y="92" class="sub">Laravel + React CRM for customers, service requests, roles, customer portal, quotes, renewals, and support.</text>
+
+  <rect x="60" y="135" width="300" height="255" class="box"/>
+  <text x="85" y="174" class="box-title">users</text>
+  <text x="85" y="210" class="field">id PK</text>
+  <text x="85" y="236" class="field">name, email, phone</text>
+  <text x="85" y="262" class="field">role: admin | staff | customer</text>
+  <text x="85" y="288" class="field">customer_id FK nullable</text>
+  <text x="85" y="314" class="field">is_active</text>
+  <text x="85" y="340" class="field">password, remember_token</text>
+  <text x="85" y="366" class="note">Admins manage users and roles.</text>
+
+  <rect x="535" y="135" width="320" height="300" class="box"/>
+  <text x="560" y="174" class="box-title">customers</text>
+  <text x="560" y="210" class="field">id PK</text>
+  <text x="560" y="236" class="field">company_name, contact_name</text>
+  <text x="560" y="262" class="field">email, phone, website</text>
+  <text x="560" y="288" class="field">industry, status</text>
+  <text x="560" y="314" class="field">address, notes</text>
+  <text x="560" y="340" class="field">next_follow_up_at</text>
+  <text x="560" y="366" class="note">Central customer profile for sales, support,</text>
+  <text x="560" y="388" class="note">domain hosting, ISP, CCTV, and projects.</text>
+
+  <rect x="1010" y="135" width="330" height="350" class="box"/>
+  <text x="1035" y="174" class="box-title">domain_hosting_requests</text>
+  <text x="1035" y="210" class="field">id PK</text>
+  <text x="1035" y="236" class="field">customer_id FK</text>
+  <text x="1035" y="262" class="field">assigned_to FK users nullable</text>
+  <text x="1035" y="288" class="field">domain_name / service asset</text>
+  <text x="1035" y="314" class="field">service_type, plan, status</text>
+  <text x="1035" y="340" class="field">requested_start_date, renewal_date</text>
+  <text x="1035" y="366" class="field">quoted_amount</text>
+  <text x="1035" y="392" class="field">requirements, internal_notes</text>
+  <text x="1035" y="422" class="note">Tracks hosting, email security, ISP, CCTV,</text>
+  <text x="1035" y="444" class="note">document systems, AV, tracking, and dev work.</text>
+
+  <path d="M360 260 C430 260 455 285 535 285" class="muted"/>
+  <text x="405" y="245" class="note">customer login belongs to customer</text>
+  <path d="M855 285 C930 285 940 285 1010 285" class="accent"/>
+  <text x="900" y="270" class="note">customer has many requests</text>
+  <path d="M360 210 C720 40 940 55 1120 135" class="muted"/>
+  <text x="660" y="78" class="note">staff/admin assigned to requests</text>
+
+  <text x="60" y="555" class="title">Application Wireframe</text>
+  <rect x="60" y="595" width="1280" height="245" class="wire"/>
+  <rect x="82" y="617" width="210" height="201" class="box"/>
+  <text x="105" y="653" class="box-title">Sidebar</text>
+  <text x="105" y="688" class="field">Dashboard</text>
+  <text x="105" y="714" class="field">Customers</text>
+  <text x="105" y="740" class="field">Service Requests</text>
+  <text x="105" y="766" class="field">Users &amp; Roles</text>
+  <text x="105" y="792" class="field">Customer Portal</text>
+
+  <rect x="320" y="617" width="410" height="96" class="box"/>
+  <text x="345" y="654" class="box-title">Executive Dashboard</text>
+  <text x="345" y="687" class="field">Metrics, service desk mix, recent requests</text>
+  <rect x="320" y="735" width="410" height="83" class="box"/>
+  <text x="345" y="771" class="box-title">Customer CRM</text>
+  <text x="345" y="800" class="field">CRUD table + customer profile form</text>
+
+  <rect x="760" y="617" width="300" height="201" class="box"/>
+  <text x="785" y="654" class="box-title">Service Requests</text>
+  <text x="785" y="688" class="field">CRUD workflow</text>
+  <text x="785" y="714" class="field">quotes, statuses, assignees</text>
+  <text x="785" y="740" class="field">renewal dates</text>
+  <text x="785" y="766" class="field">requirements and notes</text>
+  <text x="785" y="792" class="field">full ICT service taxonomy</text>
+
+  <rect x="1090" y="617" width="225" height="201" class="box"/>
+  <text x="1115" y="654" class="box-title">User Portal</text>
+  <text x="1115" y="688" class="field">Customer login</text>
+  <text x="1115" y="714" class="field">view requests</text>
+  <text x="1115" y="740" class="field">submit service request</text>
+  <text x="1115" y="766" class="field">role-based access</text>
+</svg>

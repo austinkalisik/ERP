@@ -1,0 +1,14 @@
+Options -Indexes
+
+<FilesMatch "^(config\.local\.php|config\.local\.example\.php)$">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(docs|sql)/ - [F,L]
+    RewriteRule ^uploads/.*\.php$ - [F,L,NC]
+    RewriteRule ^wifidog/auth/?$ wifidog/auth.php [L,QSA]
+    RewriteRule ^wifidog/ping/?$ wifidog/ping.php [L,QSA]
+    RewriteRule ^wifidog/portal/?$ wifidog/portal.php [L,QSA]
+</IfModule>

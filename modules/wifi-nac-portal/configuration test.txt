@@ -1,0 +1,2 @@
+http://192.168.88.177/webfig/#Quick_Set (Mikrotik Admin)
+http://192.168.56.254/status (Door 1 Hotspot/ClientSide)

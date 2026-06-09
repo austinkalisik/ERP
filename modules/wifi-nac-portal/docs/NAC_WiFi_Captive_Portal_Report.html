@@ -1,0 +1,538 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>NAC WiFi Captive Portal System Report</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 16mm 14mm;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #172033;
+            background: #ffffff;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        h1, h2, h3 {
+            color: #071426;
+            line-height: 1.2;
+            margin: 0 0 8px;
+        }
+
+        h1 {
+            font-size: 30px;
+            letter-spacing: 0;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-top: 18px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #dbe4ef;
+        }
+
+        h3 {
+            font-size: 14px;
+            margin-top: 14px;
+        }
+
+        p {
+            margin: 0 0 8px;
+        }
+
+        ul, ol {
+            margin: 6px 0 10px 20px;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0 14px;
+        }
+
+        th, td {
+            border: 1px solid #dbe4ef;
+            padding: 7px;
+            vertical-align: top;
+        }
+
+        th {
+            background: #eef4fb;
+            color: #071426;
+            text-align: left;
+        }
+
+        .cover {
+            min-height: 250mm;
+            padding: 28mm 10mm 10mm;
+            background: linear-gradient(140deg, #071426 0%, #0b2f5f 62%, #f4f7fb 62%);
+            color: #ffffff;
+            page-break-after: always;
+        }
+
+        .cover-card {
+            width: 78%;
+        }
+
+        .cover h1 {
+            color: #ffffff;
+            font-size: 38px;
+            margin-bottom: 14px;
+        }
+
+        .cover .subtitle {
+            font-size: 16px;
+            color: #d8e6f6;
+            margin-bottom: 28px;
+        }
+
+        .cover-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .meta-box {
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.08);
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .meta-box strong {
+            display: block;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .page {
+            page-break-after: always;
+        }
+
+        .toc {
+            columns: 2;
+            column-gap: 18px;
+        }
+
+        .callout {
+            border-left: 4px solid #0b5cab;
+            background: #edf6ff;
+            padding: 10px 12px;
+            margin: 10px 0 14px;
+        }
+
+        .warning {
+            border-left-color: #c9942e;
+            background: #fff7e6;
+        }
+
+        .ok {
+            border-left-color: #14845b;
+            background: #ecfdf5;
+        }
+
+        .figure {
+            margin: 10px 0 16px;
+            page-break-inside: avoid;
+        }
+
+        .figure img {
+            width: 100%;
+            border: 1px solid #cbd7e5;
+            border-radius: 5px;
+            display: block;
+        }
+
+        .caption {
+            color: #64748b;
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        .flow {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 10px 0 14px;
+        }
+
+        .step {
+            background: #f8fafc;
+            border: 1px solid #dbe4ef;
+            border-radius: 6px;
+            padding: 9px;
+            min-height: 74px;
+        }
+
+        .step strong {
+            color: #0b5cab;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e8f1fb;
+            color: #0b5cab;
+            border-radius: 999px;
+            padding: 2px 7px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-right: 4px;
+        }
+
+        .small {
+            color: #64748b;
+            font-size: 10px;
+        }
+
+        .checklist td:first-child {
+            width: 34%;
+            font-weight: 700;
+        }
+
+        .no-break {
+            page-break-inside: avoid;
+        }
+
+        code {
+            background: #eef4fb;
+            border: 1px solid #dbe4ef;
+            padding: 1px 4px;
+            border-radius: 4px;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <section class="cover">
+        <div class="cover-card">
+            <h1>NAC WiFi Captive Portal System Report</h1>
+            <p class="subtitle">Production readiness, administrator guide, and hardware integration plan for MikroTik or UniFi access points.</p>
+            <div class="cover-meta">
+                <div class="meta-box">
+                    <strong>Prepared For</strong>
+                    National Airports Corporation
+                </div>
+                <div class="meta-box">
+                    <strong>System</strong>
+                    NAC Smart WiFi Captive Portal
+                </div>
+                <div class="meta-box">
+                    <strong>Prepared Date</strong>
+                    20 May 2026
+                </div>
+                <div class="meta-box">
+                    <strong>Current Mode</strong>
+                    MikroTik HotSpot handoff, UniFi ready
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="page">
+        <h2>1. Executive Summary</h2>
+        <p>The NAC WiFi Captive Portal is a guest WiFi access system for visitors, passengers, staff guests, and other approved users. It provides a branded splash page, guest login, free advertisement-supported access, paid access packages, live session tracking, advertisement management, subscription plans, and controller settings for real captive portal deployment.</p>
+        <p>The system is designed so that when MikroTik or UniFi access point hardware arrives, the administrator can configure the portal URL, controller settings, SSIDs, access time, and HotSpot bridge file from the Admin Console. The goal is to make deployment practical without rewriting code.</p>
+        <div class="callout ok">
+            <strong>Plain explanation:</strong> A user connects to NAC WiFi, the router or access point sends them to this portal, the user signs in or watches an advert or pays, and the router/controller then allows that device to access the internet for the approved time.
+        </div>
+
+        <h2>2. Report Contents</h2>
+        <div class="toc">
+            <ol>
+                <li>Executive Summary</li>
+                <li>System Purpose</li>
+                <li>User Experience</li>
+                <li>Admin Dashboard</li>
+                <li>Sessions Controller</li>
+                <li>Advertisements</li>
+                <li>Plans and Payments</li>
+                <li>Settings</li>
+                <li>System Control</li>
+                <li>MikroTik Integration</li>
+                <li>UniFi Integration</li>
+                <li>Production Checklist</li>
+            </ol>
+        </div>
+    </section>
+
+    <section class="page">
+        <h2>3. System Purpose</h2>
+        <p>The portal exists to control and record WiFi access. It is not just a web page. It works together with network hardware such as MikroTik RouterOS HotSpot or UniFi external portal features. The hardware blocks users before login. The portal collects the user details and chooses whether the user should receive free or paid access.</p>
+        <table>
+            <tr><th>Area</th><th>Purpose</th></tr>
+            <tr><td>Open Portal</td><td>Public splash page for users who connect to the WiFi network.</td></tr>
+            <tr><td>Guest Login</td><td>Collects name, organization, phone or email before access is granted.</td></tr>
+            <tr><td>Free Access</td><td>Shows an active advertisement first, then creates an access grant.</td></tr>
+            <tr><td>Paid Access</td><td>Shows paid packages, records the payment path, and creates premium access after approval.</td></tr>
+            <tr><td>Admin Console</td><td>Lets staff manage sessions, ads, plans, settings, logo, and controller readiness.</td></tr>
+            <tr><td>Controller Integration</td><td>Connects the business flow to MikroTik or UniFi so the user actually receives internet access.</td></tr>
+        </table>
+
+        <h2>4. Basic User Flow</h2>
+        <div class="flow">
+            <div class="step"><strong>1. Connect</strong>User joins the NAC WiFi SSID from phone, laptop, or tablet.</div>
+            <div class="step"><strong>2. Redirect</strong>MikroTik or UniFi sends the user to the captive portal splash page.</div>
+            <div class="step"><strong>3. Register</strong>User enters name and phone or email. The system records IP and device details where available.</div>
+            <div class="step"><strong>4. Access</strong>User watches an advert for free access or selects a paid package. The router/controller authorizes internet access.</div>
+        </div>
+
+        <div class="figure">
+            <img src="screenshots/01-portal.png" alt="Open portal screenshot">
+            <div class="caption">Figure 1: Open Portal page shown to users when they first access the WiFi service.</div>
+        </div>
+    </section>
+
+    <section class="page">
+        <h2>5. Open Portal and Guest Login</h2>
+        <p><span class="badge">Open Portal</span> This is the first page a user sees. It explains that the WiFi portal supports MikroTik HotSpot, UniFi external portal, and backend settings. It includes the login/sign up action and a link for administrator access.</p>
+        <p><span class="badge">Guest Login</span> The guest form collects basic visitor information. This is important for accountability, usage reports, audit logs, and future customer service follow up.</p>
+        <table>
+            <tr><th>Field</th><th>Why It Matters</th></tr>
+            <tr><td>Full name</td><td>Identifies the user or visitor.</td></tr>
+            <tr><td>Organization</td><td>Optional field for company, agency, airline, contractor, or visitor group.</td></tr>
+            <tr><td>Phone or email</td><td>Contact reference for audit, support, and business reporting.</td></tr>
+            <tr><td>Device/MAC and IP</td><td>Used to match the portal record to the device on the network when the controller provides it.</td></tr>
+        </table>
+        <div class="figure">
+            <img src="screenshots/02-guest-login.png" alt="Guest login screenshot">
+            <div class="caption">Figure 2: Guest login page where users enter their details before selecting free or paid access.</div>
+        </div>
+    </section>
+
+    <section class="page">
+        <h2>6. Admin Dashboard</h2>
+        <p>The Dashboard is the main management screen. It summarizes users/sessions, advert impressions, advert clicks, and revenue. It also includes direct buttons for common tasks such as Settings, System Control, Ads, Plans, Portal Preview, and Setup Check.</p>
+        <p>The latest sessions table shows recent usage and updates live. It is useful for the airport operations team to see whether users are connecting and whether access is active or expired.</p>
+        <div class="figure">
+            <img src="screenshots/04-dashboard.png" alt="Admin dashboard screenshot">
+            <div class="caption">Figure 3: Dashboard with metrics, setup shortcuts, advertisements, and latest sessions.</div>
+        </div>
+        <h3>Dashboard Controls</h3>
+        <table>
+            <tr><th>Control</th><th>Use</th></tr>
+            <tr><td>Print</td><td>Prints the current session view for management or manual filing.</td></tr>
+            <tr><td>Export CSV</td><td>Downloads session records for Excel or reporting.</td></tr>
+            <tr><td>Manage Sessions</td><td>Opens the Sessions Controller where sessions can be reviewed and deleted.</td></tr>
+        </table>
+    </section>
+
+    <section class="page">
+        <h2>7. Sessions Controller</h2>
+        <p>The Sessions Controller is the management page for internet access records. It is intentionally separate from the live dashboard so that delete actions are controlled and confirmed.</p>
+        <div class="figure">
+            <img src="screenshots/05-sessions.png" alt="Session controller screenshot">
+            <div class="caption">Figure 4: Session Controller for printing, exporting, and deleting session records.</div>
+        </div>
+        <table>
+            <tr><th>Action</th><th>Explanation</th></tr>
+            <tr><td>Print Sessions</td><td>Prints a clean report view without the sidebar and buttons.</td></tr>
+            <tr><td>Export CSV</td><td>Exports the latest 1000 sessions for spreadsheet reporting.</td></tr>
+            <tr><td>Delete Expired</td><td>Removes old expired sessions and related access/payment records.</td></tr>
+            <tr><td>Delete All</td><td>Clears all session history. This should only be used after backup or during a reset.</td></tr>
+            <tr><td>Delete One</td><td>Removes one incorrect or test session.</td></tr>
+        </table>
+        <div class="callout warning">
+            <strong>Management note:</strong> Do not delete live operational records unless the data has been exported or backed up.
+        </div>
+    </section>
+
+    <section class="page">
+        <h2>8. Advertisements and Free Access</h2>
+        <p>Free access is controlled through active advertisements. When the user chooses free access, the system selects one active advertisement and shows it for a short countdown. After the countdown, the system records the advert view and grants free access for the configured time.</p>
+        <div class="figure">
+            <img src="screenshots/06-ads.png" alt="Ads manager screenshot">
+            <div class="caption">Figure 5: Advertisement Manager for upload, edit, activate, deactivate, and delete.</div>
+        </div>
+        <h3>How Free Ads Work</h3>
+        <ol>
+            <li>Administrator uploads an image or video advert.</li>
+            <li>Administrator marks the advert active.</li>
+            <li>Guest selects Free Access.</li>
+            <li>Portal displays the advert and countdown.</li>
+            <li>System records the view and click if the user opens the advertiser link.</li>
+            <li>Portal creates an access grant and hands the user back to the router/controller.</li>
+        </ol>
+        <p>For production captive portal use, uploaded local media is recommended because unauthenticated WiFi clients may not be allowed to load external images or videos before internet access is granted.</p>
+    </section>
+
+    <section class="page">
+        <h2>9. Plans, Paid Access, and Payments</h2>
+        <p>Plans define paid WiFi packages such as 1 Hour, 3 Hours, or 1 Day. Each plan has a duration, price, active/off status, and sort order. The user sees only active plans on the paid access page.</p>
+        <div class="figure">
+            <img src="screenshots/07-plans.png" alt="Plans manager screenshot">
+            <div class="caption">Figure 6: Plans page where paid access packages can be edited, activated, or deleted.</div>
+        </div>
+        <h3>How Paid Access Works</h3>
+        <ol>
+            <li>Administrator creates at least one active plan.</li>
+            <li>Guest selects Paid Subscription.</li>
+            <li>Guest chooses a package.</li>
+            <li>Payment is processed through configured provider or manual approval during testing.</li>
+            <li>After approval, the system creates a premium access grant for the selected duration.</li>
+        </ol>
+        <div class="callout warning">
+            <strong>Production payment rule:</strong> Live paid access should only be granted after verified payment callback, webhook, or approved manual payment confirmation.
+        </div>
+    </section>
+
+    <section class="page">
+        <h2>10. Settings</h2>
+        <p>The Settings page is the main configuration center. It is designed so an administrator can update portal branding, logo/profile image, admin username/password, deployment mode, controller address, public portal URL, SSIDs, MikroTik credentials, UniFi details, Spotipo details, and access instructions.</p>
+        <div class="figure">
+            <img src="screenshots/08-settings.png" alt="Settings screenshot">
+            <div class="caption">Figure 7: Settings page for portal branding, deployment mode, admin account, MikroTik, UniFi, and Spotipo values.</div>
+        </div>
+        <table class="checklist">
+            <tr><th>Setting Area</th><th>What To Configure</th></tr>
+            <tr><td>Portal Branding</td><td>Company name, title, subtitle, footer text, and logo/profile image.</td></tr>
+            <tr><td>Admin Account</td><td>Admin username and secure password. The password is stored as a hash.</td></tr>
+            <tr><td>Deployment Mode</td><td>Select MikroTik HotSpot, UniFi external portal, Spotipo/UniFi API, or local demo.</td></tr>
+            <tr><td>Public Portal Host/IP</td><td>The IP or hostname that WiFi users can reach, for example <code>192.168.56.1</code>.</td></tr>
+            <tr><td>Portal Path</td><td>The folder path, normally <code>/nac_wifi_xampp</code>.</td></tr>
+            <tr><td>MikroTik HotSpot</td><td>Shared HotSpot username/password used for final RouterOS login handoff.</td></tr>
+            <tr><td>UniFi / Spotipo</td><td>Controller URL, API key, site ID, API base URL, and guest access durations.</td></tr>
+        </table>
+    </section>
+
+    <section class="page">
+        <h2>11. System Control</h2>
+        <p>System Control gives administrators the deployment links and the controlled HotSpot bridge file editor. This is not a general PHP file editor. It is intentionally limited to the network bridge file needed for MikroTik HotSpot deployment.</p>
+        <div class="figure">
+            <img src="screenshots/09-control.png" alt="System control screenshot">
+            <div class="caption">Figure 8: System Control page with deployment links, enforcement status, and MikroTik bridge file editor.</div>
+        </div>
+        <h3>Key Controls</h3>
+        <table>
+            <tr><th>Control</th><th>Use</th></tr>
+            <tr><td>Portal Base URL</td><td>The address used by APs/controllers to send users to the portal.</td></tr>
+            <tr><td>MikroTik Entry URL</td><td>The URL used by RouterOS HotSpot login.html to pass HotSpot variables to PHP.</td></tr>
+            <tr><td>Enforcement Status</td><td>Internal readiness flag showing whether router/controller enforcement has been proven.</td></tr>
+            <tr><td>Regenerate Bridge File</td><td>Builds hotspot/login.html using the current portal URL.</td></tr>
+        </table>
+    </section>
+
+    <section class="page">
+        <h2>12. MikroTik Captive Portal Integration</h2>
+        <p>MikroTik RouterOS HotSpot is the current recommended direct integration path. RouterOS controls internet access. The PHP portal handles branding, guest registration, ads, payment flow, and session records.</p>
+        <h3>Required MikroTik Items</h3>
+        <ul>
+            <li>MikroTik router or CHR with HotSpot configured.</li>
+            <li>WiFi AP or bridge connected to the HotSpot network.</li>
+            <li>A shared HotSpot user that the portal can post back to RouterOS after approval.</li>
+            <li>The portal server IP reachable by HotSpot clients.</li>
+            <li>The generated <code>hotspot/login.html</code> uploaded to RouterOS HotSpot files.</li>
+        </ul>
+        <h3>MikroTik Deployment Steps</h3>
+        <ol>
+            <li>Configure the HotSpot network on MikroTik.</li>
+            <li>Create the shared HotSpot username/password.</li>
+            <li>In Admin Settings, select <code>MikroTik HotSpot handoff</code>.</li>
+            <li>Set Public Portal Host/IP and Portal Path.</li>
+            <li>Enter the shared HotSpot username/password.</li>
+            <li>Open System Control and regenerate the HotSpot bridge file.</li>
+            <li>Upload <code>hotspot/login.html</code> to the MikroTik HotSpot file area.</li>
+            <li>Connect a test client to WiFi and open <code>http://neverssl.com</code>.</li>
+            <li>Complete guest login, free advert, or paid flow.</li>
+            <li>Confirm the client appears in MikroTik active HotSpot users and has internet access.</li>
+        </ol>
+        <div class="callout ok">
+            <strong>Result:</strong> The user is not just shown a success page. RouterOS is used to authorize real network access.
+        </div>
+    </section>
+
+    <section class="page">
+        <h2>13. UniFi Captive Portal Integration</h2>
+        <p>UniFi integration depends on the UniFi Network version, gateway/AP model, and available external portal/API method. The system is ready to hold UniFi controller settings and route the guest flow through the portal. Final authorization must be connected to the confirmed UniFi method when hardware arrives.</p>
+        <h3>Required UniFi Items</h3>
+        <ul>
+            <li>UniFi access point or UniFi gateway/access point setup.</li>
+            <li>UniFi Network application/controller reachable from the portal server.</li>
+            <li>Guest WiFi network with captive portal or external portal enabled.</li>
+            <li>External portal URL pointing to the NAC portal.</li>
+            <li>UniFi site ID and API access method confirmed for the installed version.</li>
+        </ul>
+        <h3>UniFi Deployment Steps</h3>
+        <ol>
+            <li>Adopt the UniFi AP into the controller.</li>
+            <li>Create the guest WiFi SSID.</li>
+            <li>Enable guest/captive portal or external portal mode.</li>
+            <li>Set the external portal URL to the NAC portal base URL.</li>
+            <li>In Admin Settings, choose UniFi external portal or Spotipo/UniFi depending on the final controller method.</li>
+            <li>Enter controller URL, API key or token, and site ID.</li>
+            <li>Connect a test client and confirm the redirect opens the NAC portal.</li>
+            <li>Complete free or paid access and confirm the client is authorized by UniFi.</li>
+        </ol>
+        <div class="callout warning">
+            <strong>Important:</strong> UniFi final authorization must be tested with the real purchased hardware and controller version. Do not mark enforcement as integrated until a real WiFi client receives internet through UniFi after portal approval.
+        </div>
+    </section>
+
+    <section class="page">
+        <h2>14. Setup Check and Production Readiness</h2>
+        <p>The Setup Check page verifies the database, required files, controller values, payment status, API readiness, and required tables. It is used before live testing and after any deployment move.</p>
+        <div class="figure">
+            <img src="screenshots/10-setup.png" alt="Setup check screenshot">
+            <div class="caption">Figure 9: Setup Check page for deployment readiness and system health.</div>
+        </div>
+        <table class="checklist">
+            <tr><th>Production Requirement</th><th>Action</th></tr>
+            <tr><td>Admin password</td><td>Change default admin password from Settings before production.</td></tr>
+            <tr><td>Portal URL</td><td>Set host/IP and path that clients can reach from guest WiFi.</td></tr>
+            <tr><td>Controller mode</td><td>Select MikroTik HotSpot or UniFi integration mode.</td></tr>
+            <tr><td>Advert media</td><td>Upload at least one active local advert for free access.</td></tr>
+            <tr><td>Plans</td><td>Create at least one active paid package if paid access is offered.</td></tr>
+            <tr><td>Payment</td><td>Use verified payment callback or manual approval process for live money.</td></tr>
+            <tr><td>Test client</td><td>Test from a real WiFi client behind the AP/router, not only from the server browser.</td></tr>
+            <tr><td>Controller proof</td><td>Confirm the client appears as authorized on MikroTik or UniFi.</td></tr>
+        </table>
+    </section>
+
+    <section class="page">
+        <h2>15. Access Types Explained</h2>
+        <h3>Free Advertisement Access</h3>
+        <p>Free access is used when NAC or a sponsor wants to provide limited WiFi in exchange for advert exposure. The user must watch or interact with an advert before access is granted. The system records advert views and clicks.</p>
+        <h3>Paid Access</h3>
+        <p>Paid access is used when users need longer or premium connectivity. The administrator controls the plan name, price, and duration. Payments should be verified before final access is granted.</p>
+        <h3>Manual or Testing Access</h3>
+        <p>During office testing, the system can record sessions without final router enforcement. This is useful for checking screens and reports, but production access must be tested through MikroTik or UniFi.</p>
+
+        <h2>16. Roles and Responsibilities</h2>
+        <table>
+            <tr><th>Role</th><th>Responsibility</th></tr>
+            <tr><td>Managing Director / Management</td><td>Review service model, approve deployment, monitor reports and revenue/ad performance.</td></tr>
+            <tr><td>IT Administrator</td><td>Configure MikroTik/UniFi, portal settings, passwords, HotSpot bridge file, backups, and security.</td></tr>
+            <tr><td>Marketing / Commercial Team</td><td>Upload adverts, activate campaigns, monitor views and clicks.</td></tr>
+            <tr><td>Finance / Revenue Team</td><td>Review paid package records, payment process, and exported CSV reports.</td></tr>
+            <tr><td>Support Staff</td><td>Assist guests and check whether sessions are active or expired.</td></tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>17. Final Recommendation</h2>
+        <p>The system is ready as a captive portal application layer and administrator console. The remaining production proof depends on the arrival and configuration of MikroTik or UniFi hardware. Once the AP/router is installed, the most important test is a real client test from the guest WiFi network.</p>
+        <div class="callout ok">
+            <strong>Go-live rule:</strong> Do not consider the system live until a phone or laptop connects to the guest WiFi, is redirected to the NAC portal, completes the flow, appears authorized on the router/controller, and receives internet access.
+        </div>
+        <h3>Management Summary</h3>
+        <p>This portal gives NAC a controlled, branded, reportable WiFi access system. It supports free sponsored advertising access, paid package access, administrator reporting, and a path to MikroTik or UniFi captive portal enforcement. The system is structured so non-technical staff can manage day-to-day content while IT controls the router/controller integration.</p>
+    </section>
+</body>
+</html>

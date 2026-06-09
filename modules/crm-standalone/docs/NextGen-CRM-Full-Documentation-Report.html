@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>NextGen CRM Full Documentation and Upgrade Report</title>
+    <style>
+        @page { size: A4; margin: 14mm; }
+        * { box-sizing: border-box; }
+        body {
+            color: #18212f;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            line-height: 1.45;
+            margin: 0;
+        }
+        h1 {
+            color: #0f2f57;
+            font-size: 28px;
+            margin: 0 0 8px;
+        }
+        h2 {
+            border-bottom: 2px solid #d5dfeb;
+            color: #0f2f57;
+            font-size: 18px;
+            margin: 20px 0 8px;
+            padding-bottom: 4px;
+        }
+        h3 {
+            color: #213d60;
+            font-size: 14px;
+            margin: 12px 0 5px;
+        }
+        p { margin: 5px 0 8px; }
+        ul, ol { margin: 6px 0 10px 20px; padding: 0; }
+        li { margin: 3px 0; }
+        code {
+            background: #eef3f8;
+            border-radius: 3px;
+            color: #0f2f57;
+            font-family: Consolas, "Courier New", monospace;
+            padding: 1px 4px;
+        }
+        pre {
+            background: #0f172a;
+            border-radius: 6px;
+            color: #e5e7eb;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 11px;
+            line-height: 1.35;
+            overflow-wrap: anywhere;
+            padding: 10px;
+            white-space: pre-wrap;
+        }
+        table {
+            border-collapse: collapse;
+            margin: 8px 0 13px;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #cbd6e2;
+            padding: 6px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #eaf1f8;
+            color: #0f2f57;
+            font-weight: 700;
+        }
+        .cover {
+            background: #f4f7fb;
+            border-left: 8px solid #2563eb;
+            margin-bottom: 18px;
+            min-height: 230px;
+            padding: 28px;
+        }
+        .subtitle {
+            color: #536273;
+            font-size: 15px;
+            margin-bottom: 18px;
+        }
+        .meta {
+            background: #fff;
+            border: 1px solid #d5dfeb;
+            padding: 10px;
+        }
+        .note {
+            background: #fff8e7;
+            border-left: 4px solid #d99000;
+            padding: 8px 10px;
+        }
+        .ok { color: #0f7a3b; font-weight: 700; }
+        .warn { color: #9a5700; font-weight: 700; }
+        .page-break { break-before: page; page-break-before: always; }
+        .grid {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: 1fr 1fr;
+        }
+        .box {
+            background: #f8fafc;
+            border: 1px solid #d9e2ef;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <section class="cover">
+        <h1>NextGen CRM Full Documentation and Upgrade Report</h1>
+        <p class="subtitle">Daily startup guide, server map, database documentation, ERD/wireframe explanation, current feature report, missing features, and upgrade plan.</p>
+        <div class="meta">
+            <p><strong>Prepared:</strong> 21 May 2026</p>
+            <p><strong>Project folder:</strong> Z:\NextGen Projects\NextGen CRM</p>
+            <p><strong>Main daily URL through Caddy:</strong> https://192.168.88.133:8443</p>
+            <p><strong>Direct Laravel URL:</strong> http://127.0.0.1:8000</p>
+            <p><strong>Database:</strong> MySQL on 127.0.0.1:3306, database name <code>nextgen crm</code></p>
+        </div>
+    </section>
+    <p class="note"><strong>Update note, 21 May 2026:</strong> this CRM is a clone/rebuild of the current NextGen management system and is being upgraded into a cleaner Laravel + React CRM. It should preserve familiar operational screens while improving reliability, layout, filtering, renewal management, and service coverage.</p>
+
+    <h2>1. Daily Start Guide in VS Code</h2>
+    <p>Use this section every day when you forget how to start the CRM.</p>
+    <ol>
+        <li>Open VS Code.</li>
+        <li>Open folder <code>Z:\NextGen Projects\NextGen CRM</code>.</li>
+        <li>Open the terminal with <code>Ctrl + `</code>.</li>
+        <li>If the terminal is not in the project folder, run:</li>
+    </ol>
+    <pre>cd "Z:\NextGen Projects\NextGen CRM"</pre>
+    <p>Recommended daily development command:</p>
+    <pre>composer run dev</pre>
+    <p>This starts Laravel, the Laravel queue listener, and Vite frontend live reload.</p>
+    <p>Then open a second VS Code terminal and run Caddy:</p>
+    <pre>caddy run --config Caddyfile</pre>
+    <p>Open:</p>
+    <pre>https://192.168.88.133:8443/login</pre>
+    <p class="note">The browser may show a certificate warning because this project uses Caddy internal TLS for local HTTPS. That is normal for local/internal development.</p>
+
+    <h3>Alternative Manual Start</h3>
+    <p>If <code>composer run dev</code> does not work, use three terminals.</p>
+    <pre>php artisan serve --host=127.0.0.1 --port=8000</pre>
+    <pre>npm run dev -- --host 127.0.0.1</pre>
+    <pre>caddy run --config Caddyfile</pre>
+
+    <h2>2. Which Server You Are Using</h2>
+    <table>
+        <thead><tr><th>Layer</th><th>What It Does</th><th>Current Setting</th></tr></thead>
+        <tbody>
+            <tr><td>Laravel server</td><td>Runs PHP backend routes, controllers, auth, database access, and Inertia responses.</td><td><code>127.0.0.1:8000</code></td></tr>
+            <tr><td>Vite server</td><td>Runs React/Tailwind frontend development and live reload.</td><td>Usually <code>127.0.0.1:5173</code></td></tr>
+            <tr><td>Caddy</td><td>Provides local HTTPS and reverse proxies browser traffic to Laravel.</td><td><code>https://192.168.88.133:8443</code> to <code>127.0.0.1:8000</code></td></tr>
+            <tr><td>MySQL</td><td>Stores CRM data.</td><td><code>127.0.0.1:3306</code>, database <code>nextgen crm</code></td></tr>
+            <tr><td>Laravel queue</td><td>Processes queued jobs.</td><td>Started by <code>composer run dev</code></td></tr>
+        </tbody>
+    </table>
+    <p>Current Caddyfile:</p>
+    <pre>https://192.168.88.133:8443 {
+    tls internal
+    reverse_proxy 127.0.0.1:8000
+}</pre>
+
+    <h2>3. Database You Are Using</h2>
+    <p>The project uses MySQL. The current non-secret database settings are:</p>
+    <pre>DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE="nextgen crm"
+DB_USERNAME=root</pre>
+    <p>Laravel sessions, queues, and cache are also configured to use database tables:</p>
+    <pre>SESSION_DRIVER=database
+QUEUE_CONNECTION=database
+CACHE_STORE=database</pre>
+    <p>Useful database commands:</p>
+    <pre>php artisan migrate
+php artisan db:seed
+php artisan migrate:fresh --seed</pre>
+    <p class="note">Only use <code>migrate:fresh --seed</code> on local development data because it deletes and recreates tables.</p>
+
+    <h2>4. How the ERD Connects to the CRM</h2>
+    <p>The ERD and wireframe files are:</p>
+    <pre>docs\nextgen-crm-erd-wireframe.md
+docs\nextgen-crm-erd-wireframe.svg
+docs\nextgen-crm-erd-wireframe.png</pre>
+    <p>The ERD is the map of the database. The wireframe is the map of the screens. Laravel migrations create the tables, Eloquent models connect PHP to the tables, controllers load the records, and React/Inertia pages render the screens.</p>
+    <pre>customers
+  -> users
+  -> domain_hosting_requests
+  -> customer_subscriptions
+       -> subscription_payments
+       -> subscription_credits</pre>
+    <table>
+        <thead><tr><th>Screen</th><th>Main Tables Used</th></tr></thead>
+        <tbody>
+            <tr><td>Dashboard</td><td>customers, domain_hosting_requests, customer_subscriptions</td></tr>
+            <tr><td>Customers / Add Customer</td><td>customers</td></tr>
+            <tr><td>Domains</td><td>customers, domain_hosting_requests</td></tr>
+            <tr><td>Renewals</td><td>domain_hosting_requests, customer_subscriptions</td></tr>
+            <tr><td>Subscriptions</td><td>customer_subscriptions, subscription_payments, subscription_credits, customers</td></tr>
+            <tr><td>Support Requests</td><td>domain_hosting_requests, customers, users</td></tr>
+            <tr><td>Admin Settings</td><td>system_settings, users</td></tr>
+            <tr><td>Customer Portal</td><td>users, customers, domain_hosting_requests</td></tr>
+        </tbody>
+    </table>
+
+    <h2>5. Tools and Frameworks Used</h2>
+    <table>
+        <thead><tr><th>Tool</th><th>Purpose</th></tr></thead>
+        <tbody>
+            <tr><td>PHP 8.3</td><td>Backend programming language.</td></tr>
+            <tr><td>Laravel 13</td><td>Main backend framework.</td></tr>
+            <tr><td>Composer</td><td>PHP dependency manager and development script runner.</td></tr>
+            <tr><td>MySQL</td><td>Database server.</td></tr>
+            <tr><td>React 19</td><td>Frontend UI library.</td></tr>
+            <tr><td>Inertia.js</td><td>Connects Laravel controllers to React pages.</td></tr>
+            <tr><td>TypeScript</td><td>Safer frontend JavaScript.</td></tr>
+            <tr><td>Vite</td><td>Frontend development server and asset builder.</td></tr>
+            <tr><td>Tailwind CSS 4</td><td>Styling framework.</td></tr>
+            <tr><td>shadcn/Radix UI</td><td>UI component foundation.</td></tr>
+            <tr><td>Laravel Fortify</td><td>Login, password reset, email verification, and two-factor authentication.</td></tr>
+            <tr><td>Caddy</td><td>Local HTTPS reverse proxy.</td></tr>
+            <tr><td>PHPUnit, ESLint, Prettier, Pint</td><td>Testing, linting, and formatting.</td></tr>
+            <tr><td>VS Code and Git</td><td>Editor and source control.</td></tr>
+        </tbody>
+    </table>
+
+    <h2>5A. NextGen Website Alignment</h2>
+    <p>The public NextGen website at <code>https://nextgenpng.net/</code> positions Nextgen Technology as Papua New Guinea's premier domain hosting and ICT services provider. The CRM should track customers and subscriptions across the same service lines promoted on the website.</p>
+    <ul>
+        <li>Domain hosting and .pg domain registration.</li>
+        <li>POP3 email accounts, website hosting, and email anti-spam protection.</li>
+        <li>Internet Service Provider services.</li>
+        <li>CCTV/security and surveillance.</li>
+        <li>Document management solutions.</li>
+        <li>Vehicle tracking systems.</li>
+        <li>Audio visual systems.</li>
+        <li>Network and infrastructure services.</li>
+        <li>Website design and application development.</li>
+    </ul>
+    <p>The CRM service categories already cover these areas through domain/hosting requests and subscription service types. The next upgrade should add clearer product/plan records for Basic, Standard, Value, and Premium hosting plans, including monthly prices and plan limits from the website.</p>
+
+    <h2>6. Current Features Already Built</h2>
+    <h3>Latest UI and Behavior Fixes</h3>
+    <ul>
+        <li>Create Subscription form fields were expanded and repaired so date, status, amount, service name, and reference inputs are no longer clipped.</li>
+        <li>Subscription create form and subscription register now have working collapse/expand controls.</li>
+        <li>Subscription register now supports horizontal scrolling when the table is wider than the available desktop viewport.</li>
+        <li>Dashboard Total Suspended Customers now links to <code>/customers?status=suspended</code>.</li>
+        <li>Customer listing now supports a suspended-only server-side status filter.</li>
+        <li>Renewals page now has summary cards, visible-row select/clear actions, clearer month search, and selected-count behavior.</li>
+    </ul>
+    <div class="grid">
+        <div class="box">
+            <h3>Authentication and Roles</h3>
+            <ul><li>Login, registration routes, password reset, email verification, two-factor support.</li><li>Admin, staff, and customer roles.</li><li>Customer users can link to customer records.</li></ul>
+        </div>
+        <div class="box">
+            <h3>Dashboard</h3>
+            <ul><li>Customer, domain, suspended customer, support request, and domain registration metrics.</li><li>Recent request list.</li><li>Staff dashboard and customer portal behavior.</li></ul>
+        </div>
+        <div class="box">
+            <h3>Customer Management</h3>
+            <ul><li>List, create, update, and admin delete.</li><li>Company, contact, email, phone, industry, status, website, address, notes, and follow-up date.</li></ul>
+        </div>
+        <div class="box">
+            <h3>Requests and Domains</h3>
+            <ul><li>Hosting/service request index.</li><li>Domain listing, domain registration listing, support request listing, and detail pages.</li><li>Assignee, quote, renewal date, requirements, and internal notes.</li></ul>
+        </div>
+        <div class="box">
+            <h3>Subscriptions</h3>
+            <ul><li>Service type, service name, reference, status, start date, expiry date, renewal cycle, amount, and notes.</li><li>Linked customer and history records.</li></ul>
+        </div>
+        <div class="box">
+            <h3>Payments and Credits</h3>
+            <ul><li>Payment records, invoice numbers, payment references, and file uploads.</li><li>Service credits calculate months and extend expiry dates.</li></ul>
+        </div>
+    </div>
+
+    <h2>7. Important CRM Routes</h2>
+    <table>
+        <thead><tr><th>URL</th><th>Purpose</th></tr></thead>
+        <tbody>
+            <tr><td>/login</td><td>Login</td></tr>
+            <tr><td>/dashboard</td><td>Dashboard or customer portal behavior</td></tr>
+            <tr><td>/customers</td><td>Customer list</td></tr>
+            <tr><td>/add-customer</td><td>Add customer</td></tr>
+            <tr><td>/domains</td><td>Domain list</td></tr>
+            <tr><td>/renewals</td><td>Renewal monitoring</td></tr>
+            <tr><td>/subscriptions</td><td>Subscription management</td></tr>
+            <tr><td>/hosting-requests</td><td>Service request management</td></tr>
+            <tr><td>/support-requests</td><td>Support request list</td></tr>
+            <tr><td>/domain-registrations</td><td>Domain registration workflow</td></tr>
+            <tr><td>/bulk-email-validator</td><td>Bulk email tool</td></tr>
+            <tr><td>/admin-settings</td><td>Branding and email settings</td></tr>
+            <tr><td>/users</td><td>Admin user management</td></tr>
+        </tbody>
+    </table>
+
+    <h2>8. Demo Accounts</h2>
+    <pre>admin@nextgenpng.net
+staff@nextgenpng.net
+customer@nextgenpng.net
+
+Password for seeded demo accounts:
+password</pre>
+    <p class="note">Change seeded passwords before production use.</p>
+
+    <h2 class="page-break">9. What Is Missing or Needs Improvement</h2>
+    <h3>High Priority</h3>
+    <ol>
+        <li>Automated renewal reminders by email, SMS, or dashboard notification.</li>
+        <li>Production backup process for MySQL and uploaded invoice files.</li>
+        <li>Production deployment plan with domain name, public SSL, queue worker, scheduler, and database backup.</li>
+        <li>Audit log for deletes, subscription changes, credit changes, and SMTP settings updates.</li>
+        <li>Stronger staff/admin/customer permission policy.</li>
+        <li>Customer portal invoice/payment visibility decision.</li>
+        <li>Password policy and forced password change for seeded/demo users.</li>
+        <li>Product/plan table for NextGen website hosting plans: Basic, Standard, Value, Premium.</li>
+        <li>Direct migration/import plan from the current cloned management system into the upgraded CRM schema.</li>
+    </ol>
+    <h3>Business Features to Add</h3>
+    <ol>
+        <li>Invoice generator and printable receipt.</li>
+        <li>Payment status per subscription: paid, partial, overdue, unpaid.</li>
+        <li>Customer statement report.</li>
+        <li>Expiring soon report.</li>
+        <li>Overdue invoice report.</li>
+        <li>Service credit approval workflow.</li>
+        <li>Ticket comments and activity timeline.</li>
+        <li>File attachments for support requests.</li>
+        <li>Task assignment and due-date reminders for staff.</li>
+        <li>Customer communication history.</li>
+        <li>Quote/proposal module.</li>
+        <li>Product/service catalog with pricing.</li>
+        <li>Dashboard charts for revenue, renewals, support workload, and service categories.</li>
+        <li>Hosting plan catalog matching NextGen public website prices and limits.</li>
+        <li>Domain availability/registration workflow integration if NextGen wants end-to-end .pg registration tracking.</li>
+        <li>Email settings lookup/help page for customer support staff.</li>
+    </ol>
+    <h3>Technical Improvements</h3>
+    <ol>
+        <li>Add automated browser tests for critical workflows.</li>
+        <li>Add API/resource tests for permissions.</li>
+        <li>Add indexes after production data grows.</li>
+        <li>Add soft deletes for business records.</li>
+        <li>Add file storage policy for uploads.</li>
+        <li>Add scheduled command for renewal reminders.</li>
+        <li>Add queue worker service for production.</li>
+        <li>Review <code>.env.example</code> to match Caddy and MySQL setup.</li>
+        <li>Add a one-command Windows startup script.</li>
+        <li>Add deployment documentation for a real server.</li>
+    </ol>
+
+    <h2>10. Upgrade Plan</h2>
+    <table>
+        <thead><tr><th>Phase</th><th>Work</th></tr></thead>
+        <tbody>
+            <tr><td>Phase 1: Stabilize daily development</td><td>Create one reliable startup script, align README/start files/Caddyfile, choose one port, document daily startup, and keep cloned legacy navigation familiar while progressively replacing broken layouts.</td></tr>
+            <tr><td>Phase 2: Protect data</td><td>Add MySQL backup, uploaded file backup, restore instructions, soft deletes, and audit log.</td></tr>
+            <tr><td>Phase 3: Improve CRM operations</td><td>Add renewal reminders, payment status, statements, PDF invoices, request attachments, staff tasks, dashboard alerts, and a service plan catalog aligned to nextgenpng.net.</td></tr>
+            <tr><td>Phase 4: Production readiness</td><td>Use a real domain, public SSL, queue worker service, scheduler, production env, real SMTP, strong passwords, and monitoring.</td></tr>
+        </tbody>
+    </table>
+
+    <h2>11. Quality Commands</h2>
+    <pre>npm run types:check
+npm run lint:check
+npm run format:check
+npm run build
+php artisan test
+composer run lint
+composer run lint:check
+php artisan optimize:clear
+php artisan route:list</pre>
+
+    <h2>12. Troubleshooting</h2>
+    <h3>Page Does Not Open</h3>
+    <pre>php artisan serve --host=127.0.0.1 --port=8000
+caddy run --config Caddyfile</pre>
+    <h3>Frontend Changes Do Not Show</h3>
+    <pre>npm run dev
+npm run build
+php artisan optimize:clear</pre>
+    <h3>Database Error</h3>
+    <pre>php artisan migrate</pre>
+    <h3>Login Does Not Work</h3>
+    <pre>php artisan db:seed</pre>
+
+    <h2>13. Daily Programmer Checklist</h2>
+    <pre>1. Open VS Code.
+2. Open Z:\NextGen Projects\NextGen CRM.
+3. Open terminal.
+4. Run: composer run dev
+5. Open second terminal.
+6. Run: caddy run --config Caddyfile
+7. Open: https://192.168.88.133:8443/login
+8. Login with admin account.
+9. Before coding run: git status --short
+10. After coding run tests/build.
+11. Write what changed.
+12. Commit when ready.</pre>
+
+    <h2>14. Expert Notes</h2>
+    <ul>
+        <li>Keep one source of truth for ports. The current Caddyfile expects Laravel on port 8000. Some older notes mention 8001.</li>
+        <li><code>composer run dev</code> is the best development start command because it starts Laravel, queue, and Vite together.</li>
+        <li>Caddy should stay in a separate terminal because it is the reverse proxy.</li>
+        <li>Do not expose <code>.env</code> passwords in Git or documentation.</li>
+        <li>Do not use <code>php artisan migrate:fresh --seed</code> unless you are comfortable deleting local data.</li>
+        <li>Before production launch, add backups, audit logs, real SMTP, strong passwords, scheduler, queue service, and HTTPS with a real domain.</li>
+    </ul>
+</body>
+</html>

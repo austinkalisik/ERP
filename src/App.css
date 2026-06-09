@@ -1,0 +1,125 @@
+/* Dashboard card styles */
+.dashboard-card {
+  border-radius: 15px;
+  transition: transform 0.2s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Table responsive on mobile */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  /* Hide sidebar by default on mobile */
+  .sidebar {
+    position: fixed !important;
+    left: -250px;
+    top: 0;
+    height: 100vh;
+    width: 250px !important;
+    z-index: 1000;
+    transition: left 0.3s ease !important;
+  }
+
+  /* Show sidebar when open on mobile */
+  .sidebar.mobile-open {
+    left: 0 !important;
+  }
+
+  /* Show overlay when sidebar is open */
+  .mobile-overlay {
+    display: block !important;
+  }
+
+  /* Add hamburger to navbar on mobile */
+  .mobile-hamburger {
+    display: block !important;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+    padding: 10px;
+  }
+
+  /* Adjust main content on mobile */
+  .main-content-mobile {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
+  /* Stack cards on mobile */
+  .col-md-4, .col-lg-4, .col-md-6, .col-lg-6 {
+    width: 100% !important;
+    margin-bottom: 1rem;
+  }
+
+  /* Adjust navbar */
+  .navbar-mobile {
+    justify-content: space-between !important;
+  }
+
+  /* Smaller padding on mobile */
+  .card-body {
+    padding: 1rem !important;
+  }
+
+  /* Responsive buttons */
+  .btn-lg {
+    padding: 10px 15px !important;
+    font-size: 14px !important;
+  }
+
+  /* Responsive table */
+  .table {
+    font-size: 12px;
+  }
+
+  .table th, .table td {
+    padding: 8px 5px;
+    white-space: nowrap;
+  }
+
+  /* Hide some table columns on very small screens */
+  @media (max-width: 576px) {
+    .table td:nth-child(3),
+    .table th:nth-child(3) {
+      display: none;
+    }
+  }
+
+  /* Adjust stat cards on mobile */
+  h3 {
+    font-size: 1.5rem !important;
+  }
+
+  h5 {
+    font-size: 1.1rem !important;
+  }
+}
+
+/* Tablet Responsive */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .col-lg-4 {
+    width: 50% !important;
+  }
+
+  .col-lg-6 {
+    width: 100% !important;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 769px) {
+  .mobile-overlay {
+    display: none !important;
+  }
+
+  .mobile-hamburger {
+    display: none !important;
+  }
+}
