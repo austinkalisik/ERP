@@ -614,6 +614,62 @@ const navigationGroups = [
   { id: "governance", label: "Governance", modules: ["reports", "settings", "users"] }
 ];
 
+const moduleSubmenus = {
+  hrms: [
+    ["hrmsEmployees", "Employees"],
+    ["hrmsAttendance", "Attendance"],
+    ["hrmsApplications", "Leave & OT Requests"],
+    ["hrmsDepartments", "Departments"],
+  ],
+  payroll: [
+    ["payrollRuns", "Payroll Runs"],
+    ["payrollEmployees", "Payroll Employees"],
+    ["payrollCashAdvances", "Cash Advances"],
+  ],
+  assets: [
+    ["aimsInventory", "Asset Inventory"],
+    ["aimsOrders", "Request & Purchase Orders"],
+    ["aimsInvoices", "Invoices"],
+    ["aimsLedger", "General Ledger"],
+    ["assetAssignments", "Assignments"],
+    ["assetSuppliers", "Suppliers"],
+    ["assetNotifications", "Notifications"],
+  ],
+  moms: [
+    ["momsMachines", "Machines"],
+    ["momsOperations", "Operations"],
+    ["momsMaintenance", "Maintenance"],
+  ],
+  crm: [
+    ["crmCustomers", "Clients"],
+    ["crmSubscriptions", "Subscriptions"],
+    ["crmHosting", "Hosting"],
+    ["crmSupport", "Support"],
+    ["crmRenewals", "Renewals"],
+  ],
+  tickets: [
+    ["ticketTickets", "Tickets"],
+    ["ticketClients", "Clients"],
+    ["ticketServices", "Services"],
+    ["ticketSla", "SLA"],
+    ["ticketKnowledge", "Knowledge Base"],
+  ],
+  monitoring: [
+    ["monitoringDevices", "Devices"],
+    ["monitoringReadings", "Readings"],
+    ["monitoringEvents", "Events & Alarms"],
+    ["monitoringMaintenance", "Maintenance"],
+  ],
+  reports: [
+    ["reportCenter", "Report Center"],
+    ["auditReports", "Audit Logs"],
+  ],
+  settings: [
+    ["systemSettings", "System Settings"],
+    ["securitySettings", "Security"],
+  ],
+};
+
 function loadAccess() {
   try {
     const parsed = JSON.parse(localStorage.getItem("nextgen-full-erp-access"));
@@ -665,6 +721,7 @@ function App() {
   const [activeSection, setActiveSection] = useState(defaultUi);
   const [query, setQuery] = useState("");
   const [openGroups, setOpenGroups] = useState(() => ({ main: true, people: true, operations: true, customers: true, governance: true }));
+  const [openModules, setOpenModules] = useState(() => ({ moms: true }));
   const pngTime = usePngTime();
 
   function updateState(next, auditMessage) {
@@ -717,11 +774,44 @@ function App() {
                 </button>
                 {openGroups[group.id] && groupModules.map((item) => {
                   const Icon = item.icon;
+                  const submenus = moduleSubmenus[item.id] || [];
+                  const isOpen = openModules[item.id];
                   return (
-                    <button key={item.id} className={module === item.id ? "active" : ""} onClick={() => setActiveModule(item.id)}>
-                      <Icon size={18} />
-                      {item.short}
-                    </button>
+                    <div className="module-nav" key={item.id}>
+                      <button
+                        type="button"
+                        className={module === item.id ? "active module-nav-row" : "module-nav-row"}
+                        onClick={() => {
+                          setActiveModule(item.id);
+                          if (submenus.length) setOpenModules((current) => ({ ...current, [item.id]: !current[item.id] }));
+                        }}
+                      >
+                        <Icon size={18} />
+                        <span>{item.short}</span>
+                        {submenus.length > 0 && <ChevronDown size={15} className={isOpen ? "open" : ""} />}
+                      </button>
+                      {submenus.length > 0 && isOpen && (
+                        <div className="module-subnav">
+                          {submenus.map(([sectionKey, label]) => {
+                            const SectionIcon = schemas[sectionKey]?.icon || FileText;
+                            return (
+                              <button
+                                type="button"
+                                key={sectionKey}
+                                className={module === item.id && activeSection[item.id] === sectionKey ? "active" : ""}
+                                onClick={() => {
+                                  setActiveModule(item.id);
+                                  setActiveSection({ ...activeSection, [item.id]: sectionKey });
+                                }}
+                              >
+                                <SectionIcon size={15} />
+                                {label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
                   );
                 })}
               </div>
@@ -799,8 +889,7 @@ function Login({ onLogin }) {
           <div className="brand large">
             <div className="brand-mark">NG</div>
             <div>
-              <strong>NextGen Unified ERP</strong>
-              <span>Enterprise operations platform</span>
+              <strong>NextGen ERP</strong>
             </div>
           </div>
           <div className="login-clock">
@@ -809,8 +898,7 @@ function Login({ onLogin }) {
           </div>
         </div>
         <div className="login-intro">
-          <h1>Secure ERP Access</h1>
-          <p>Assets, HRMS, payroll, CRM, ticketing, monitoring, and management controls in one governed workspace.</p>
+          <h1>Sign in</h1>
         </div>
         <form onSubmit={submit}>
           <label>Email address<input value={email} onChange={(event) => setEmail(event.target.value)} /></label>

@@ -44,12 +44,7 @@ export default function Login() {
           <div className="col-md-5 d-none d-md-flex enterprise-login-brand">
             <div>
               <div className="enterprise-mark">NG</div>
-              <h2>NextGen Unified ERP</h2>
-              <p>Secure operational control for HRMS, payroll, assets, CRM, AIMS, MOMS, and reporting.</p>
-              <div className="enterprise-brand-meta">
-                <span>Governed access</span>
-                <span>PNG operations</span>
-              </div>
+              <h2>NextGen ERP</h2>
             </div>
           </div>
 
@@ -57,8 +52,7 @@ export default function Login() {
             <div className="enterprise-login-body">
               <div className="enterprise-login-top">
                 <div>
-                  <span className="enterprise-kicker">Enterprise access</span>
-                  <h4>Sign in to ERP</h4>
+                  <h4>Sign in</h4>
                 </div>
                 <PngClock compact />
               </div>
@@ -96,10 +90,6 @@ export default function Login() {
                   {isLoading ? "Signing in..." : "Sign In"}
                 </button>
               </form>
-
-              <p className="enterprise-login-footer">
-                © {new Date().getFullYear()} NextGen PNG. Authorized users only.
-              </p>
             </div>
           </div>
         </div>
