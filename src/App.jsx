@@ -5,6 +5,7 @@ import {
   Bell,
   BriefcaseBusiness,
   Building2,
+  ChevronDown,
   CheckCircle2,
   ClipboardList,
   Database,
@@ -59,24 +60,23 @@ function usePngTime() {
 }
 
 const accounts = [
-  { email: "admin@nextgenpng.net", password: "password", name: "System Admin", role: "Super Admin", modules: ["dashboard", "hrms", "payroll", "aims", "moms", "assets", "crm", "tickets", "monitoring", "reports", "settings", "users"], write: true },
+  { email: "admin@nextgenpng.net", password: "password", name: "System Admin", role: "Super Admin", modules: ["dashboard", "hrms", "payroll", "moms", "assets", "crm", "tickets", "monitoring", "reports", "settings", "users"], write: true },
   { email: "hr@nextgenpng.net", password: "password", name: "HR Officer", role: "HRMS Manager", modules: ["dashboard", "hrms", "reports"], write: true },
   { email: "payroll@nextgenpng.net", password: "password", name: "Payroll Officer", role: "Payroll Manager", modules: ["dashboard", "hrms", "payroll", "reports"], write: true },
-  { email: "inventory@nextgenpng.net", password: "password", name: "Inventory Officer", role: "AIMS Manager", modules: ["dashboard", "aims", "assets", "reports"], write: true },
+  { email: "inventory@nextgenpng.net", password: "password", name: "Inventory Officer", role: "Asset Inventory Manager", modules: ["dashboard", "assets", "reports"], write: true },
   { email: "assets@nextgenpng.net", password: "password", name: "Asset Manager", role: "Asset Manager", modules: ["dashboard", "assets", "tickets", "reports"], write: true },
   { email: "crm@nextgenpng.net", password: "password", name: "CRM Officer", role: "CRM Manager", modules: ["dashboard", "crm", "tickets", "reports"], write: true },
   { email: "support@nextgenpng.net", password: "password", name: "Support Desk", role: "Support Lead", modules: ["dashboard", "crm", "tickets", "monitoring", "reports"], write: true },
   { email: "noc@nextgenpng.net", password: "password", name: "NOC Operator", role: "Monitoring Operator", modules: ["dashboard", "tickets", "monitoring", "reports"], write: true },
-  { email: "viewer@nextgenpng.net", password: "password", name: "Read Only Viewer", role: "Viewer", modules: ["dashboard", "hrms", "payroll", "aims", "moms", "assets", "crm", "tickets", "monitoring", "reports"], write: false }
+  { email: "viewer@nextgenpng.net", password: "password", name: "Read Only Viewer", role: "Viewer", modules: ["dashboard", "hrms", "payroll", "moms", "assets", "crm", "tickets", "monitoring", "reports"], write: false }
 ];
 
 const moduleConfig = [
   { id: "dashboard", label: "Dashboard", short: "Dashboard", icon: LayoutDashboard },
   { id: "hrms", label: "HRMS", short: "HRMS", icon: Users },
   { id: "payroll", label: "Payroll", short: "Payroll", icon: FileText },
-  { id: "aims", label: "AIMS", short: "AIMS", icon: PackageCheck },
   { id: "moms", label: "MOMS", short: "MOMS", icon: Settings },
-  { id: "assets", label: "Assets Management", short: "Assets", icon: HardDrive },
+  { id: "assets", label: "Asset Management", short: "Assets", icon: HardDrive },
   { id: "crm", label: "CRM", short: "CRM", icon: BriefcaseBusiness },
   { id: "tickets", label: "Ticketing", short: "Tickets", icon: LifeBuoy },
   { id: "monitoring", label: "Monitoring", short: "Monitoring", icon: Monitor },
@@ -164,8 +164,8 @@ const schemas = {
     ]
   },
   aimsInventory: {
-    title: "AIMS Inventory",
-    description: "ERP inventory items, warehouses, units, stock movements, and reorder controls.",
+    title: "Asset Inventory",
+    description: "Asset items, warehouses, units, stock movements, and reorder controls.",
     icon: PackageCheck,
     idPrefix: "AIM",
     fields: [["item", "Item"], ["sku", "SKU"], ["category", "Category"], ["warehouse", "Warehouse"], ["quantity", "Qty"], ["unit", "Unit"], ["status", "Status"]],
@@ -188,7 +188,7 @@ const schemas = {
   },
   aimsOrders: {
     title: "Request & Purchase Orders",
-    description: "Request orders, purchase requests, sales orders, and approvals.",
+    description: "Request orders, purchase requests, asset procurement, and approvals.",
     icon: ClipboardList,
     idPrefix: "ORD",
     fields: [["type", "Type"], ["requester", "Requester"], ["supplier", "Supplier"], ["items", "Items"], ["amount", "Amount"], ["status", "Status"], ["created", "Created"]],
@@ -571,9 +571,8 @@ const schemas = {
 const moduleSections = {
   hrms: ["hrmsEmployees", "hrmsAttendance", "hrmsApplications", "hrmsDepartments"],
   payroll: ["payrollRuns", "payrollEmployees", "payrollCashAdvances"],
-  aims: ["aimsInventory", "aimsInvoices", "aimsOrders", "aimsLedger"],
   moms: ["momsMachines", "momsOperations", "momsMaintenance"],
-  assets: ["assetInventory", "assetAssignments", "assetSuppliers", "assetCategories", "assetDepartments", "assetReceivers", "assetNotifications", "assetActivity"],
+  assets: ["aimsInventory", "aimsOrders", "aimsInvoices", "aimsLedger", "assetInventory", "assetAssignments", "assetSuppliers", "assetCategories", "assetDepartments", "assetReceivers", "assetNotifications", "assetActivity"],
   crm: ["crmCustomers", "crmSubscriptions", "crmHosting", "crmSupport", "crmRenewals"],
   tickets: ["ticketTickets", "ticketClients", "ticketServices", "ticketSla", "ticketSystemStatus", "ticketKnowledge"],
   monitoring: ["monitoringDevices", "monitoringReadings", "monitoringEvents", "monitoringMaintenance", "monitoringIntegrations"],
@@ -585,8 +584,8 @@ const roleDescriptions = [
   ["Super Admin", "Everything", "Full create, edit, delete, export, settings, and user control"],
   ["HRMS Manager", "HRMS + Reports", "Employee master files, attendance, applications, departments, and HR reports"],
   ["Payroll Manager", "HRMS + Payroll", "Payroll runs, salary setup, deductions, cash advances, and payslip records"],
-  ["AIMS Manager", "AIMS + Assets", "Inventory, stock movements, orders, invoices, GL, and asset register support"],
-  ["Asset Manager", "Assets + Tickets", "Asset inventory, assignments, suppliers, departments, notifications, and linked tickets"],
+  ["Asset Inventory Manager", "Asset Management", "Inventory, stock movements, asset procurement, invoices, GL, and stocktake records"],
+  ["Asset Manager", "Assets + Tickets", "Asset register, assignments, suppliers, departments, notifications, and linked tickets"],
   ["CRM Manager", "CRM + Tickets", "Customers, subscriptions, renewals, hosting requests, support requests, and linked tickets"],
   ["Support Lead", "CRM + Tickets + Monitoring", "Customer support, tickets, service status, and monitoring events"],
   ["Monitoring Operator", "Tickets + Monitoring", "NOC checks, devices, readings, events, maintenance, and ticket escalation"],
@@ -597,9 +596,8 @@ const defaultUi = {
   dashboard: "dashboard",
   hrms: "hrmsEmployees",
   payroll: "payrollRuns",
-  aims: "aimsInventory",
   moms: "momsMachines",
-  assets: "assetInventory",
+  assets: "aimsInventory",
   crm: "crmCustomers",
   tickets: "ticketTickets",
   monitoring: "monitoringDevices",
@@ -607,6 +605,28 @@ const defaultUi = {
   settings: "systemSettings",
   users: "users"
 };
+
+const navigationGroups = [
+  { id: "main", label: "Main", modules: ["dashboard"] },
+  { id: "people", label: "People & Payroll", modules: ["hrms", "payroll"] },
+  { id: "operations", label: "Operations", modules: ["assets", "moms"] },
+  { id: "customers", label: "Customers & Support", modules: ["crm", "tickets", "monitoring"] },
+  { id: "governance", label: "Governance", modules: ["reports", "settings", "users"] }
+];
+
+function loadAccess() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem("nextgen-full-erp-access"));
+    if (parsed && typeof parsed === "object") return parsed;
+  } catch {
+    // Ignore invalid local access state.
+  }
+  return Object.fromEntries(accounts.map(({ email, modules, write }) => [email, { modules, write }]));
+}
+
+function persistAccess(next) {
+  localStorage.setItem("nextgen-full-erp-access", JSON.stringify(next));
+}
 
 function cloneSeed() {
   const state = { audit: ["ERP workspace initialized from full system analysis"] };
@@ -640,9 +660,11 @@ function tone(value) {
 function App() {
   const [user, setUser] = useState(() => accounts.find((item) => item.email === localStorage.getItem("nextgen-full-erp-user")) || null);
   const [state, setState] = useState(loadState);
+  const [accessState, setAccessState] = useState(loadAccess);
   const [activeModule, setActiveModule] = useState("dashboard");
   const [activeSection, setActiveSection] = useState(defaultUi);
   const [query, setQuery] = useState("");
+  const [openGroups, setOpenGroups] = useState(() => ({ main: true, people: true, operations: true, customers: true, governance: true }));
   const pngTime = usePngTime();
 
   function updateState(next, auditMessage) {
@@ -653,8 +675,19 @@ function App() {
 
   if (!user) return <Login onLogin={setUser} />;
 
-  const allowedModules = moduleConfig.filter((item) => user.modules.includes(item.id));
+  const effectiveUser = { ...user, ...(accessState[user.email] || {}) };
+  const allowedModules = moduleConfig.filter((item) => effectiveUser.modules.includes(item.id));
   const module = allowedModules.some((item) => item.id === activeModule) ? activeModule : "dashboard";
+
+  function updateAccess(email, nextAccess) {
+    const next = { ...accessState, [email]: nextAccess };
+    setAccessState(next);
+    persistAccess(next);
+    if (email === user.email) {
+      const stillAllowed = nextAccess.modules.includes(activeModule);
+      if (!stillAllowed) setActiveModule("dashboard");
+    }
+  }
 
   return (
     <div className="shell">
@@ -666,14 +699,32 @@ function App() {
             <span>All-in-one operations</span>
           </div>
         </div>
-        <nav>
-          {allowedModules.map((item) => {
-            const Icon = item.icon;
+        <nav className="sidebar-nav">
+          {navigationGroups.map((group) => {
+            const groupModules = group.modules
+              .map((id) => moduleConfig.find((item) => item.id === id))
+              .filter((item) => item && allowedModules.some((allowed) => allowed.id === item.id));
+            if (!groupModules.length) return null;
             return (
-              <button key={item.id} className={module === item.id ? "active" : ""} onClick={() => setActiveModule(item.id)}>
-                <Icon size={18} />
-                {item.short}
-              </button>
+              <div className="nav-group" key={group.id}>
+                <button
+                  type="button"
+                  className="nav-group-toggle"
+                  onClick={() => setOpenGroups((current) => ({ ...current, [group.id]: !current[group.id] }))}
+                >
+                  <span>{group.label}</span>
+                  <ChevronDown size={15} className={openGroups[group.id] ? "open" : ""} />
+                </button>
+                {openGroups[group.id] && groupModules.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <button key={item.id} className={module === item.id ? "active" : ""} onClick={() => setActiveModule(item.id)}>
+                      <Icon size={18} />
+                      {item.short}
+                    </button>
+                  );
+                })}
+              </div>
             );
           })}
         </nav>
@@ -681,7 +732,7 @@ function App() {
           <UserRound size={18} />
           <div>
             <strong>{user.name}</strong>
-            <span>{user.role}</span>
+            <span>{effectiveUser.role}</span>
           </div>
         </div>
         <button className="signout" onClick={() => { localStorage.removeItem("nextgen-full-erp-user"); setUser(null); }}>
@@ -705,7 +756,7 @@ function App() {
           </label>
           <button className="icon-button" title="Notifications"><Bell size={18} /></button>
         </header>
-        {module === "dashboard" && <Dashboard state={state} setActiveModule={setActiveModule} user={user} />}
+        {module === "dashboard" && <Dashboard state={state} setActiveModule={setActiveModule} user={effectiveUser} />}
         {Object.keys(moduleSections).includes(module) && (
           <ModuleWorkspace
             module={module}
@@ -714,10 +765,10 @@ function App() {
             activeSection={activeSection[module]}
             setActiveSection={(section) => setActiveSection({ ...activeSection, [module]: section })}
             query={query}
-            user={user}
+            user={effectiveUser}
           />
         )}
-        {module === "users" && <UsersAndRoles />}
+        {module === "users" && <UsersAndRoles currentUser={effectiveUser} accessState={accessState} updateAccess={updateAccess} />}
       </main>
     </div>
   );
@@ -783,8 +834,8 @@ function Dashboard({ state, setActiveModule, user }) {
   const stats = [
     ["Employees", state.hrmsEmployees.length, "View", "hrms", Users, "blue"],
     ["Payroll", state.payrollRuns.filter((row) => row.status !== "Posted").length, "View", "payroll", FileText, "purple"],
-    ["Inventory", state.aimsInventory.length, "View", "aims", PackageCheck, "green"],
-    ["Low Stock Items", state.aimsInventory.filter((row) => String(row.status).toLowerCase().includes("low")).length + state.assetInventory.filter((row) => String(row.status).toLowerCase().includes("low")).length, "View", "aims", AlertTriangle, "orange"],
+    ["Asset Inventory", state.aimsInventory.length + state.assetInventory.length, "View", "assets", PackageCheck, "green"],
+    ["Low Stock Assets", state.aimsInventory.filter((row) => String(row.status).toLowerCase().includes("low")).length + state.assetInventory.filter((row) => String(row.status).toLowerCase().includes("low")).length, "View", "assets", AlertTriangle, "orange"],
     ["Active Clients", state.crmCustomers.filter((row) => row.status === "Active").length, "View", "crm", BriefcaseBusiness, "indigo"],
     ["System Users", accounts.length, "Manage", "users", Users, "red"],
     ["Activity Logs", (state.auditReports?.length || 0) + (state.assetActivity?.length || 0), "View", "reports", Activity, "indigo"]
@@ -833,7 +884,7 @@ function Dashboard({ state, setActiveModule, user }) {
         </Panel>
         <Panel title="Merged Systems" badge="Live modules">
           <ul className="activity-list">
-            <li>Assets Management merged with inventory, assignments, suppliers, departments, receivers, notifications, and activity logs.</li>
+            <li>Asset Management handles inventory, assignments, suppliers, procurement, invoices, departments, receivers, notifications, and activity logs.</li>
             <li>CRM merged with clients, subscriptions, renewals, hosting requests, support, and service tracking.</li>
             <li>Ticketing merged with clients, services, SLA, tickets, knowledge base, and system status.</li>
             <li>Monitoring merged with devices, readings, events, maintenance, integrations, and nextgenpng.net checks.</li>
@@ -931,7 +982,7 @@ function RecordsPanel({ stateKey, schema, state, updateState, query, user }) {
             {schema.fields.map(([key, label]) => (
               <label key={key}>
                 {label}
-                <input value={form[key] || ""} onChange={(event) => setForm({ ...form, [key]: event.target.value })} />
+                <input type={inputTypeForKey(key)} value={inputValueForKey(key, form[key])} onChange={(event) => setForm({ ...form, [key]: event.target.value })} />
               </label>
             ))}
             <div className="form-actions">
@@ -1009,10 +1060,31 @@ function DataTable({ rows, fields, onView, onEdit, onDelete, onQuickAction, canW
   );
 }
 
-function UsersAndRoles() {
+function inputTypeForKey(key) {
+  const normalized = key.toLowerCase();
+  if (normalized.includes("date") || ["from", "to", "joined", "created", "updated", "scheduled", "captured"].includes(normalized)) return "date";
+  if (normalized.includes("timein") || normalized.includes("timeout")) return "time";
+  return "text";
+}
+
+function inputValueForKey(key, value) {
+  if (!value) return "";
+  if (inputTypeForKey(key) === "date") return String(value).slice(0, 10);
+  return value;
+}
+
+function UsersAndRoles({ currentUser, accessState, updateAccess }) {
+  if (currentUser.role !== "Super Admin") {
+    return (
+      <section className="stack">
+        <Panel title="Restricted" badge="Admin only" description="Only the system administrator can assign users, roles, module access, and write privileges." />
+      </section>
+    );
+  }
+
   return (
     <section className="stack">
-      <Panel title="One Login Access Control" badge="Role matrix" description="Users enter one ERP login. Their role decides which systems and actions they can access.">
+      <Panel title="Admin User Access Control" badge="Role matrix" description="Only the administrator assigns each user's modules and whether they can create, update, delete, export, or only view records.">
         <div className="role-grid">
           {roleDescriptions.map(([role, access, detail]) => (
             <article className="role-card" key={role}>
@@ -1023,8 +1095,48 @@ function UsersAndRoles() {
           ))}
         </div>
       </Panel>
-      <Panel title="Demo Users" badge={`${accounts.length} accounts`}>
-        <MiniTable rows={accounts.map(({ password, modules, write, ...rest }) => ({ ...rest, access: modules.join(", "), permission: write ? "Write" : "Read only" }))} columns={["email", "name", "role", "access", "permission"]} />
+      <Panel title="User Permission Assignment" badge={`${accounts.length} accounts`}>
+        <div className="user-access-grid">
+          {accounts.map((account) => {
+            const access = accessState[account.email] || { modules: account.modules, write: account.write };
+            return (
+              <article className="user-access-card" key={account.email}>
+                <div>
+                  <strong>{account.name}</strong>
+                  <span>{account.email}</span>
+                  <Badge>{account.role}</Badge>
+                </div>
+                <label className="write-toggle">
+                  <input
+                    type="checkbox"
+                    checked={access.write}
+                    disabled={account.role === "Super Admin"}
+                    onChange={(event) => updateAccess(account.email, { ...access, write: event.target.checked })}
+                  />
+                  Can create, edit, delete, and export
+                </label>
+                <div className="permission-grid">
+                  {moduleConfig.map((module) => (
+                    <label key={module.id}>
+                      <input
+                        type="checkbox"
+                        checked={access.modules.includes(module.id)}
+                        disabled={account.role === "Super Admin" || module.id === "dashboard"}
+                        onChange={(event) => {
+                          const modules = event.target.checked
+                            ? [...new Set([...access.modules, module.id])]
+                            : access.modules.filter((id) => id !== module.id);
+                          updateAccess(account.email, { ...access, modules: modules.includes("dashboard") ? modules : ["dashboard", ...modules] });
+                        }}
+                      />
+                      {module.short}
+                    </label>
+                  ))}
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </Panel>
     </section>
   );

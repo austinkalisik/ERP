@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Permission;
 use App\Models\AuditLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -21,6 +22,8 @@ class UserManagementController extends Controller
         'moms_manager',
         'moms_supervisor',
         'moms_operator',
+        'crm_manager',
+        'crm_staff',
     ];
 
     /**
@@ -29,9 +32,19 @@ class UserManagementController extends Controller
      */
     public function index()
     {
-        $users = User::select('id', 'name', 'email', 'role', 'is_active', 'created_at')
+        $users = User::with('permissions:id,slug,description')
+            ->select('id', 'name', 'email', 'role', 'is_active', 'created_at')
             ->orderBy('created_at', 'asc')
-            ->get();
+            ->get()
+            ->map(fn (User $user) => [
+                'id'          => $user->id,
+                'name'        => $user->name,
+                'email'       => $user->email,
+                'role'        => $user->role,
+                'is_active'   => $user->is_active,
+                'created_at'  => $user->created_at,
+                'permissions' => $user->permissions->pluck('slug')->values(),
+            ]);
 
         return response()->json($users);
     }
@@ -61,6 +74,8 @@ class UserManagementController extends Controller
             // ✅ FIXED: was missing AIMS and MOMS roles
             'role'      => ['required', Rule::in(self::VALID_ROLES)],
             'is_active' => 'required|boolean',
+            'permissions'   => 'sometimes|array',
+            'permissions.*' => 'string|exists:permissions,slug',
         ]);
 
         $user->name      = $validated['name'];
@@ -68,6 +83,13 @@ class UserManagementController extends Controller
         $user->role      = $validated['role'];
         $user->is_active = $validated['is_active'];
         $user->save();
+
+        if (array_key_exists('permissions', $validated) && ! $user->isSystemAdmin()) {
+            $permissionIds = Permission::whereIn('slug', $validated['permissions'])->pluck('id')->toArray();
+            $user->permissions()->sync($permissionIds);
+            $user->unsetRelation('permissions');
+            $user->load('permissions:id,slug,description');
+        }
 
         // Build audit trail
         $changes = [];

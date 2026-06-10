@@ -51,16 +51,16 @@ export default function AIMSDashboard() {
         <div className="row mb-4">
           <div className="col-12">
             <h1 style={{ fontWeight: "bold", fontSize: "clamp(20px, 5vw, 28px)" }}>
-              AIMS – Auto Inventory Management System
+              Asset Management System
             </h1>
           </div>
         </div>
 
         {/* KPI Cards */}
         <div className="row g-3 mb-4">
-          <AIMSCard title="Total Items"        value={kpis.total_items}        color="#3b82f6" icon={<MdInventory size={30} color="#fff" />} />
-          <AIMSCard title="Low Stock Items"    value={kpis.low_stock_items}    color="#f59e0b" icon={<MdWarning   size={30} color="#fff" />} />
-          <AIMSCard title="Out of Stock Items" value={kpis.out_of_stock_items} color="#ef4444" icon={<MdWarning   size={30} color="#fff" />} />
+          <AIMSCard title="Total Assets"       value={kpis.total_items}        color="#3b82f6" icon={<MdInventory size={30} color="#fff" />} />
+          <AIMSCard title="Low Stock Assets"   value={kpis.low_stock_items}    color="#f59e0b" icon={<MdWarning   size={30} color="#fff" />} />
+          <AIMSCard title="Out of Stock Assets" value={kpis.out_of_stock_items} color="#ef4444" icon={<MdWarning   size={30} color="#fff" />} />
         </div>
 
         {/* Low Stock Trend Chart */}
@@ -100,8 +100,8 @@ export default function AIMSDashboard() {
               </div>
               <div className="card-body">
                 <div className="row g-3">
-                  {canCreateInventory       && <ActionButton label="Add Item"                icon={<MdAddBox size={20} />}        color="#3b82f6" onClick={() => navigate("/aims/add-item")} />}
-                  {canViewInventory         && <ActionButton label="View Inventory List"     icon={<MdList size={20} />}          color="#6366f1" onClick={() => navigate("/aims/inventory")} />}
+                  {canCreateInventory       && <ActionButton label="Add Asset Item"          icon={<MdAddBox size={20} />}        color="#3b82f6" onClick={() => navigate("/aims/add-item")} />}
+                  {canViewInventory         && <ActionButton label="View Asset Inventory"    icon={<MdList size={20} />}          color="#6366f1" onClick={() => navigate("/aims/inventory")} />}
                   {canStockInOut            && <ActionButton label="View Stock Movements"    icon={<MdSwapHoriz size={20} />}     color="#10b981" onClick={() => navigate("/aims/stock-movements")} />}
                   {canViewPurchaseOrders    && <ActionButton label="View Purchase Requests"  icon={<MdLocalShipping size={20} />} color="#ef4444" onClick={() => navigate("/aims/purchase-requests")} />}
                   {canViewSuppliers         && <ActionButton label="Suppliers"               icon={<MdPeople size={20} />}        color="#0ea5e9" onClick={() => navigate("/aims/suppliers")} />}

@@ -5,11 +5,9 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
-
 * {
   box-sizing: border-box;
 }
-
 body {
   margin: 0;
   min-width: 320px;
@@ -85,7 +83,39 @@ nav {
   gap: 7px;
 }
 
-nav button,
+.sidebar-nav {
+  display: grid;
+  gap: 12px;
+}
+
+.nav-group {
+  display: grid;
+  gap: 6px;
+}
+
+.nav-group-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 30px;
+  padding: 0 6px;
+  border: 0;
+  color: #64748b;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.nav-group-toggle svg {
+  transition: transform 0.18s ease;
+}
+
+.nav-group-toggle svg.open {
+  transform: rotate(180deg);
+}
+
+nav button:not(.nav-group-toggle),
 .signout {
   display: flex;
   align-items: center;
@@ -100,14 +130,14 @@ nav button,
   text-align: left;
 }
 
-nav button:hover,
-nav button.active {
+nav button:not(.nav-group-toggle):hover,
+nav button:not(.nav-group-toggle).active {
   color: #ffffff;
   background: linear-gradient(135deg, #123d72, #176b6a);
 }
 
-nav button:not(.active)::after {
-  content: "›";
+nav button:not(.active):not(.nav-group-toggle)::after {
+  content: "â€º";
   margin-left: auto;
   color: #6b7280;
   font-size: 18px;
@@ -628,6 +658,35 @@ nav button:not(.active)::after {
   background: #ffffff;
 }
 
+.record-form input[type="date"],
+.record-form input[type="time"],
+input[type="date"].form-control,
+input[type="datetime-local"].form-control,
+input[type="time"].form-control,
+.form-control[type="date"],
+.form-control[type="datetime-local"],
+.form-control[type="time"] {
+  min-height: 42px;
+  padding-right: 38px;
+  border-color: #cbd8ea;
+  border-radius: 8px;
+  color: #10243f;
+  background-color: #ffffff;
+  box-shadow: 0 8px 20px rgba(15, 35, 63, 0.05);
+}
+
+.record-form input[type="date"]:focus,
+.record-form input[type="time"]:focus,
+input[type="date"].form-control:focus,
+input[type="datetime-local"].form-control:focus,
+input[type="time"].form-control:focus,
+.form-control[type="date"]:focus,
+.form-control[type="datetime-local"]:focus,
+.form-control[type="time"]:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+}
+
 .form-actions {
   display: flex;
   align-items: end;
@@ -1023,6 +1082,56 @@ th {
   margin: 0;
   color: #60708a;
   font-size: 13px;
+}
+
+.user-access-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.user-access-card {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid #d8e1ee;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(17, 24, 39, 0.06);
+}
+
+.user-access-card strong,
+.user-access-card span {
+  display: block;
+}
+
+.user-access-card > div:first-child > span {
+  margin: 4px 0 8px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.write-toggle,
+.permission-grid label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.permission-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.write-toggle input,
+.permission-grid input {
+  width: 16px;
+  height: 16px;
+  accent-color: #176b6a;
 }
 
 @media (max-width: 1180px) {

@@ -47,7 +47,7 @@ const inferModule = (log) => {
   const desc = (log.description || "").toLowerCase();
   if (desc.includes("employee") || desc.includes("department") || desc.includes("shift"))                              return "HRMS";
   if (desc.includes("payroll")  || desc.includes("payslip")    || desc.includes("salary"))                             return "Payroll";
-  if (desc.includes("inventory")|| desc.includes("stock")      || desc.includes("item"))                               return "AIMS";
+  if (desc.includes("inventory")|| desc.includes("stock")      || desc.includes("item"))                               return "Asset Management";
   if (desc.includes("machine")  || desc.includes("fuel")       || desc.includes("maintenance") || desc.includes("breakdown")) return "MOMS";
   if (desc.includes("client")   || desc.includes("subscription"))                                                       return "CRM";
   if (desc.includes("user")     || desc.includes("logged"))                                                             return "System";
@@ -118,10 +118,10 @@ export default function Dashboard() {
           <DashboardCard title="Payroll"         value={stats.payroll}     color="#8b5cf6" icon={<MdAttachMoney size={30} color="#fff" />} onView={() => navigate("/payroll")} />
         )}
         {hasPermission("access_aims") && (
-          <DashboardCard title="Inventory"       value={stats.inventory}   color="#10b981" icon={<MdInventory size={30} color="#fff" />}   onView={() => navigate("/aims/items")} />
+          <DashboardCard title="Asset Inventory" value={stats.inventory}   color="#10b981" icon={<MdInventory size={30} color="#fff" />}   onView={() => navigate("/aims/inventory")} />
         )}
         {hasPermission("access_aims") && (
-          <DashboardCard title="Low Stock Items" value={stats.lowStock}    color="#f59e0b" icon={<MdWarning size={30} color="#fff" />}     onView={() => navigate("/aims/stock-movements")} />
+          <DashboardCard title="Low Stock Assets" value={stats.lowStock}   color="#f59e0b" icon={<MdWarning size={30} color="#fff" />}     onView={() => navigate("/aims/stock-movements")} />
         )}
         {hasPermission("access_crm") && !isEmployee && (
           <DashboardCard

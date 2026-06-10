@@ -119,7 +119,7 @@ export default function AddItem() {
       <div className="container-fluid px-3 px-md-4 py-4">
         <div className="row mb-4 align-items-center">
           <div className="col">
-            <h1 className="fw-bold mb-2" style={{ fontSize: "28px", color: "#1a252f" }}>Add New Inventory Item</h1>
+            <h1 className="fw-bold mb-2" style={{ fontSize: "28px", color: "#1a252f" }}>Add New Asset Item</h1>
             <p className="text-muted mb-0" style={{ fontSize: "14px" }}>Complete the form below to register a new item</p>
           </div>
           <div className="col-auto">

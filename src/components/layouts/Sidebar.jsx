@@ -71,16 +71,22 @@ export default function Sidebar({ open, setOpen, user }) {
       ],
     },
     {
-      name: t("nav.aims"), icon: <MdQrCodeScanner />, path: "/aims",
+      name: "Asset Management", icon: <MdQrCodeScanner />, path: "/aims",
       permission: "access_aims",
       hasSubmenu: true,
       submenu: [
         // ── Stocktaking (all AIMS users) ──
+        { name: "Asset Dashboard", icon: <MdDashboard />, path: "/aims", permission: "access_aims" },
+        { name: "Inventory List", icon: <MdInventory />, path: "/aims/inventory", permission: "aims.inventory.view" },
+        { name: "Add Asset Item", icon: <MdBuild />, path: "/aims/add-item", permission: "aims.inventory.create" },
+        { name: "Stock Movements", icon: <MdRefresh />, path: "/aims/stock-movements", permission: "aims.inventory.update" },
+        { name: "Purchase Requests", icon: <MdAssessment />, path: "/aims/purchase-requests", permission: "aims.purchase_orders.view" },
+        { name: "Suppliers", icon: <MdPeople />, path: "/aims/suppliers", permission: "aims.purchase_orders.view" },
         { name: "Stocktake", icon: <MdInventory />, path: "/aims/stocktake", permission: "access_aims" },
 
         // ── Setup submenu (managers only) ──
         ...(hasPermission("aims.purchase_orders.approve") ? [{
-          name: t("moms.setup"), icon: <MdBuild />, path: "/aims/setup",
+          name: "Asset Setup", icon: <MdBuild />, path: "/aims/setup",
           permission: "aims.purchase_orders.approve", hasNestedSubmenu: true,
           nestedSubmenu: [
             { name: t("aims.salesOrders.title") || "Sales Order", icon: <MdAssessment />, path: "/aims/setup/sales-order", permission: "aims.purchase_orders.approve" },

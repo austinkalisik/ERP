@@ -23,7 +23,7 @@ import PayrollConfigSection    from "./sections/PayrollConfig/PayrollConfigSecti
 /* MOMS SECTIONS */
 import ChecklistTemplatesSection from "./sections/MOMS/ChecklistTemplatesSection";
 
-/* AIMS SECTIONS */
+/* ASSET MANAGEMENT SECTIONS */
 import CategoriesSection from "./sections/AIMS/CategoriesSection";
 import UnitsSection      from "./sections/AIMS/UnitsSection";
 import WarehousesSection from "./sections/AIMS/WarehousesSection";
@@ -610,13 +610,65 @@ const ROLES = [
   { value: "hr",              label: "HR" },
   { value: "dept_head",       label: "Department Head" },
   { value: "employee",        label: "Employee" },
-  { value: "aims_manager",    label: "AIMS Manager" },
-  { value: "aims_staff",      label: "AIMS Staff" },
+  { value: "aims_manager",    label: "Asset Manager" },
+  { value: "aims_staff",      label: "Asset Staff" },
   { value: "moms_manager",    label: "MOMS Manager" },
   { value: "moms_supervisor", label: "MOMS Supervisor" },
   { value: "moms_operator",   label: "MOMS Operator" },
   { value: "crm_manager",     label: "CRM Manager" },
   { value: "crm_staff",       label: "CRM Staff"   },
+];
+
+const PERMISSION_GROUPS = [
+  {
+    title: "Module Access",
+    permissions: [
+      ["access_hrms", "HRMS"],
+      ["access_payroll", "Payroll"],
+      ["access_aims", "Asset Management"],
+      ["access_moms", "MOMS"],
+      ["access_crm", "CRM"],
+    ],
+  },
+  {
+    title: "HRMS",
+    permissions: [
+      ["employee.view", "View employees"],
+      ["employee.create", "Create employees"],
+      ["employee.update", "Update employees"],
+      ["employee.delete", "Delete employees"],
+      ["attendance.manage", "Manage attendance"],
+      ["leave.approve", "Approve leave"],
+    ],
+  },
+  {
+    title: "Asset Management",
+    permissions: [
+      ["aims.inventory.view", "View assets"],
+      ["aims.inventory.create", "Create assets"],
+      ["aims.inventory.update", "Update assets"],
+      ["aims.inventory.delete", "Delete assets"],
+      ["aims.purchase_orders.view", "View purchase"],
+      ["aims.purchase_orders.approve", "Approve purchase"],
+    ],
+  },
+  {
+    title: "MOMS",
+    permissions: [
+      ["moms.fleet.view", "View fleet"],
+      ["moms.operators.view", "View operators"],
+      ["moms.operations.create", "Start operations"],
+      ["moms.operations.approve", "Approve operations"],
+      ["moms.maintenance.view", "View maintenance"],
+      ["moms.fuel.view", "View fuel"],
+    ],
+  },
+  {
+    title: "CRM",
+    permissions: [
+      ["access_crm", "Access CRM workspace"],
+    ],
+  },
 ];
 
 function UsersAndRoles() {
@@ -629,7 +681,7 @@ function UsersAndRoles() {
   const [showEditModal,          setShowEditModal]          = useState(false);
   const [showResetPasswordModal, setShowResetPasswordModal] = useState(false);
   const [selectedUser,           setSelectedUser]           = useState(null);
-  const [editFormData,           setEditFormData]           = useState({ name: "", email: "", role: "", is_active: true });
+  const [editFormData,           setEditFormData]           = useState({ name: "", email: "", role: "", is_active: true, permissions: [] });
   const [newPassword,            setNewPassword]            = useState("");
 
   const cacheKey = ["settings_users"];
@@ -644,8 +696,17 @@ function UsersAndRoles() {
 
   const handleEditUser = (user) => {
     setSelectedUser(user);
-    setEditFormData({ name: user.name, email: user.email, role: user.role, is_active: user.is_active !== false });
+    setEditFormData({ name: user.name, email: user.email, role: user.role, is_active: user.is_active !== false, permissions: user.permissions || [] });
     setShowEditModal(true);
+  };
+
+  const togglePermission = (slug, checked) => {
+    setEditFormData((current) => ({
+      ...current,
+      permissions: checked
+        ? [...new Set([...(current.permissions || []), slug])]
+        : (current.permissions || []).filter((item) => item !== slug),
+    }));
   };
 
   const handleUpdateUser = async () => {
@@ -802,6 +863,31 @@ function UsersAndRoles() {
               <Form.Check type="checkbox" label="Active" checked={editFormData.is_active}
                 onChange={(e) => setEditFormData({ ...editFormData, is_active: e.target.checked })} />
             </Form.Group>
+            <div className="border rounded-3 p-3">
+              <div className="d-flex align-items-center justify-content-between mb-2">
+                <Form.Label className="mb-0 fw-semibold">Permissions</Form.Label>
+                {editFormData.role === "system_admin" && <span className="badge bg-dark">All permissions</span>}
+              </div>
+              <div className="row g-3">
+                {PERMISSION_GROUPS.map((group) => (
+                  <div className="col-md-6" key={group.title}>
+                    <div className="small fw-bold text-uppercase text-muted mb-2">{group.title}</div>
+                    <div className="d-grid gap-2">
+                      {group.permissions.map(([slug, label]) => (
+                        <Form.Check
+                          key={slug}
+                          type="checkbox"
+                          label={label}
+                          checked={editFormData.role === "system_admin" || (editFormData.permissions || []).includes(slug)}
+                          disabled={editFormData.role === "system_admin"}
+                          onChange={(event) => togglePermission(slug, event.target.checked)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -832,13 +918,13 @@ function UsersAndRoles() {
 }
 
 /* =========================
-   MODULE / HRMS / AIMS / CRM CHOOSERS
+   MODULE / HRMS / ASSET MANAGEMENT / CRM CHOOSERS
 ========================= */
 function ModulesChooser({ onSelect }) {
   const modules = [
     { key: "hrms",       title: "HRMS",       desc: "Human Resource Management" },
     { key: "payroll",    title: "Payroll",     desc: "Payroll configuration" },
-    { key: "aims",       title: "AIMS",        desc: "Inventory management" },
+    { key: "aims",       title: "Asset Management", desc: "Assets, inventory, procurement, stocktake, and suppliers" },
     { key: "moms",       title: "MOMS",        desc: "Operations management" },
     { key: "crm",        title: "CRM",         desc: "Customer & subscription management" },
     { key: "accounting", title: "Accounting",  desc: "Financial settings" },
@@ -869,7 +955,7 @@ function AIMSSettings({ onManage }) {
   ];
   return (
     <div>
-      <h3 className="mb-4">AIMS Settings</h3>
+      <h3 className="mb-4">Asset Management Settings</h3>
       <div className="row g-3">
         {items.map((item) => (
           <div className="col-md-6" key={item.key}>

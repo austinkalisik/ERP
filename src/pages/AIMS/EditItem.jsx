@@ -90,7 +90,7 @@ export default function EditItem() {
       <div className="container-fluid px-3 px-md-4 py-4">
         <div className="row mb-4 align-items-center">
           <div className="col">
-            <h1 className="fw-bold mb-2" style={{ fontSize: "28px" }}>Edit Inventory Item</h1>
+            <h1 className="fw-bold mb-2" style={{ fontSize: "28px" }}>Edit Asset Item</h1>
             <p className="text-muted mb-0" style={{ fontSize: "14px" }}>Update item details and stock configuration</p>
           </div>
           <div className="col-auto">

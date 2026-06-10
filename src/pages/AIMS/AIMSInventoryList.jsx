@@ -148,7 +148,7 @@ export default function AIMSInventoryList() {
       <div className="container-fluid px-3 px-md-4 py-4">
         <div className="row mb-4 align-items-center">
           <div className="col">
-            <h1 className="fw-bold mb-1">Inventory Management</h1>
+            <h1 className="fw-bold mb-1">Asset Inventory Management</h1>
             <p className="text-muted mb-0">Monitor stock levels and valuation</p>
           </div>
           {canCreate && (
